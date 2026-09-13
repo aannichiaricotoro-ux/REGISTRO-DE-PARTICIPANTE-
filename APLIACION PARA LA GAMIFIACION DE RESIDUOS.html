@@ -1,0 +1,3199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gamificación Gestión Integral Residuos Sólidos – IAS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #07111f;
+  --bg2:       #0d1f36;
+  --surface:   #112240;
+  --surface2:  #1b3460;
+  --border:    #1e4080;
+  --text:      #e8f0fe;
+  --muted:     #8baed4;
+  --dim:       #4d7aaa;
+
+  --blanco:    #f0f4ff;
+  --blanco-dk: #1a2240;
+  --verde:     #22c55e;
+  --verde-dk:  #052e16;
+  --negro:     #64748b;
+  --negro-dk:  #0f172a;
+  --rojo:      #ef4444;
+  --rojo-dk:   #1f0505;
+  --amber:     #f59e0b;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+}
+
+.autores-box {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  z-index: 2;
+}
+.autores-lbl {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 3px;
+}
+.autores-nombre {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,.72);
+  line-height: 1.5;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* ============================================================
+   CABECERA INSTITUCIONAL
+============================================================ */
+.inst-header {
+  width: 100%;
+  background: linear-gradient(135deg, #071525 0%, #0d2040 60%, #071525 100%);
+  border-bottom: 2px solid #1e4080;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.inst-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(34,197,94,.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 50%, rgba(59,130,246,.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.inst-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(30,64,128,.6);
+}
+
+.inst-logos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.inst-logo-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.norm-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+.norm-pill {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pill-res2184 { background: #052e16; color: #4ade80; border: 1px solid #166534; }
+.pill-dec351  { background: #0c1f5c; color: #93c5fd; border: 1px solid #1d4ed8; }
+.pill-res591  { background: #3b0764; color: #d8b4fe; border: 1px solid #7c3aed; }
+
+.inst-title-area {
+  padding: 14px 20px 16px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.main-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(14px, 3.2vw, 22px);
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 20px rgba(59,130,246,.4);
+}
+
+.main-title span { color: #4ade80; }
+
+.title-sub {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.title-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #22c55e, #3b82f6);
+  border-radius: 2px;
+  margin: 8px auto 0;
+}
+
+/* ============================================================
+   APP CONTAINER
+============================================================ */
+#app {
+  width: 100%;
+  max-width: 840px;
+  padding: 16px 14px;
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ============================================================
+   PANTALLA MENÚ
+============================================================ */
+/* Marco normativo */
+.norm-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.norm-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.norm-cards {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+}
+
+@media (max-width: 540px) { .norm-cards { grid-template-columns: 1fr; } }
+
+.norm-card {
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.nc-green  { background: #052e16; border: 1px solid #166534; }
+.nc-blue   { background: #0c1f5c; border: 1px solid #1e40af; }
+.nc-purple { background: #3b0764; border: 1px solid #6d28d9; }
+
+.nc-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 4px;
+  display: block;
+}
+.nc-green  .nc-name  { color: #4ade80; }
+.nc-blue   .nc-name  { color: #93c5fd; }
+.nc-purple .nc-name  { color: #d8b4fe; }
+
+.nc-desc { color: #94a3b8; }
+
+/* Categorías */
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 20px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 480px) { .guide-grid { grid-template-columns: 1fr; } }
+
+.guide-card {
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  transition: transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+.guide-card:hover { transform: translateY(-3px); }
+
+.guide-card.aprovechable  { background: #f0f4f8; border-color: #b0b8c1; }
+.guide-card.no-aprovechable { background: #1a1a1a; border-color: #555555; }
+.guide-card.organico      { background: #0e2b0e; border-color: #3da83d; }
+.guide-card.peligroso     { background: #3a0505; border-color: #c01010; }
+
+.gc-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.gc-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.aprovechable  .gc-badge { background: #d8dde3; border: 2px solid #9aa5b1; }
+.no-aprovechable .gc-badge { background: #2d2d2d; border: 2px solid #555; }
+.organico      .gc-badge { background: #1a4a1a; border: 2px solid #3da83d; }
+.peligroso     .gc-badge { background: #7a1010; border: 2px solid #c01010; }
+
+.gc-info {}
+.gc-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.aprovechable  .gc-name  { color: #1a2a3a; }
+.no-aprovechable .gc-name { color: #e0e0e0; }
+.organico      .gc-name  { color: #a8f0a8; }
+.peligroso     .gc-name  { color: #ffb3b3; }
+
+.gc-bolsa { font-size: 10px; font-weight: 700; color: var(--dim); letter-spacing: .5px; }
+
+.gc-desc { font-size: 11.5px; color: #94a3b8; line-height: 1.55; margin-bottom: 9px; }
+.aprovechable .gc-desc { color: #374151; }
+.aprovechable .gc-bolsa { color: #4a6a8a; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 7px;
+  letter-spacing: .2px;
+}
+.aprovechable  .tag { background: #c8d4de; color: #1a2a3a; border: 1px solid #9aa5b1; }
+.no-aprovechable .tag { background: #3d3d3d; color: #d6d3d1; border: 1px solid #666; }
+.organico      .tag { background: #1a5c1a; color: #b8f0b8; border: 1px solid #3da83d; }
+.peligroso     .tag { background: #8b1515; color: #ffcccc; border: 1px solid #c01010; }
+
+/* Niveles */
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 400px) { .level-grid { grid-template-columns: 1fr; } }
+
+.level-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 18px 10px;
+  cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  transition: transform .2s, box-shadow .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+}
+.level-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.06);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.level-btn:hover::after { opacity: 1; }
+.level-btn:hover  { transform: translateY(-5px); }
+.level-btn:active { transform: scale(.95); }
+
+.level-btn.easy   { background: linear-gradient(150deg,#052e16,#166534); color:#dcfce7; box-shadow:0 6px 28px rgba(21,128,61,.4); }
+.level-btn.medium { background: linear-gradient(150deg,#271106,#92400e); color:#fef3c7; box-shadow:0 6px 28px rgba(180,83,9,.4); }
+.level-btn.hard   { background: linear-gradient(150deg,#1f0707,#991b1b); color:#fee2e2; box-shadow:0 6px 28px rgba(220,38,38,.4); }
+
+.lvl-ico  { font-size: 34px; }
+.lvl-nm   { font-size: 16px; }
+.lvl-info { font-size: 10px; font-family:'Nunito',sans-serif; font-weight:700; opacity:.75; text-align:center; line-height:1.5; }
+
+/* ============================================================
+   PRUEBA DIAGNÓSTICA
+============================================================ */
+.preeval-header {
+  background: linear-gradient(160deg, #0d2040 0%, #112240 100%);
+  border: 1px solid #1e4080;
+  border-radius: 20px;
+  padding: 20px 16px 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.preeval-icon { font-size: 42px; margin-bottom: 6px; }
+.preeval-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px; font-weight: 900; letter-spacing: 1px;
+  text-transform: uppercase; color: #fff; line-height: 1.15;
+  margin-bottom: 6px;
+}
+.preeval-title span { color: #60a5fa; }
+.preeval-sub {
+  font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px;
+}
+.preeval-hud {
+  display: flex; justify-content: center; gap: 24px; margin-bottom: 10px;
+}
+.preeval-hud-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.preeval-hud-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 900; color: #fff;
+}
+.preeval-hud-lbl { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+.preeval-prog-bar {
+  height: 6px; background: rgba(255,255,255,.1);
+  border-radius: 99px; overflow: hidden;
+}
+.preeval-prog-fill {
+  height: 100%; background: linear-gradient(90deg, #2563eb, #60a5fa);
+  border-radius: 99px; transition: width .4s ease;
+  width: 0%;
+}
+
+.preeval-item-card {
+  background: var(--surface);
+  border: 2px solid #1e4080;
+  border-radius: 20px;
+  padding: 22px 16px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.pe-emoji { font-size: 56px; margin-bottom: 10px; }
+.pe-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 800; color: #fff;
+  margin-bottom: 8px; line-height: 1.3;
+}
+.pe-question {
+  font-size: 12px; color: var(--muted); font-weight: 700; font-style: italic;
+}
+
+.preeval-bins {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.pe-bin {
+  border: none; border-radius: 16px; padding: 14px 10px;
+  cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; transition: transform .15s, box-shadow .15s;
+}
+.pe-bin:hover { transform: translateY(-3px); }
+.pe-bin:active { transform: scale(.96); }
+.pe-bin-ico { font-size: 26px; }
+.pe-bin-lbl {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 900; color: #fff;
+  text-align: center; line-height: 1.2;
+}
+.pe-bin-sub { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.7); }
+.pe-bin-white { background: linear-gradient(135deg, #334155, #1e293b); border: 2px solid #94a3b8; box-shadow: 0 4px 16px rgba(148,163,184,.25); }
+.pe-bin-black { background: linear-gradient(135deg, #0f172a, #1e293b); border: 2px solid #475569; box-shadow: 0 4px 16px rgba(71,85,105,.25); }
+.pe-bin-green { background: linear-gradient(135deg, #052e16, #14532d); border: 2px solid #22c55e; box-shadow: 0 4px 16px rgba(34,197,94,.25); }
+.pe-bin-red   { background: linear-gradient(135deg, #1f0505, #450a0a); border: 2px solid #ef4444; box-shadow: 0 4px 16px rgba(239,68,68,.25); }
+
+/* ============================================================
+   RESULTADO DE EVALUACIÓN PREVIA
+============================================================ */
+#preeval-result-screen { text-align: center; padding: 22px 10px; }
+
+.prerres-hero { font-size: 62px; margin-bottom: 8px; animation: bounce-in .5s; }
+@keyframes bounce-in { 0%{transform:scale(.4);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+
+.prerres-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 16px;
+}
+.prerres-score-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; padding: 18px; margin-bottom: 14px;
+  display: inline-block; min-width: 180px;
+}
+.prerres-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 900; color: #fbbf24;
+}
+.prerres-score-lbl { font-size: 11px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+.prerres-nivel-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; border-radius: 30px; margin-bottom: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: .5px; color: #fff;
+}
+.prerres-mensaje {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px; margin-bottom: 14px;
+  font-size: 13px; line-height: 1.7; color: var(--text); text-align: left;
+}
+.prerres-areas {
+  background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.2);
+  border-radius: 16px; padding: 14px; margin-bottom: 14px; text-align: left;
+}
+.prerres-areas-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 900; color: #f87171; margin-bottom: 8px; text-transform: uppercase;
+}
+.prerres-area-tag {
+  display: inline-block; background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3);
+  border-radius: 8px; padding: 4px 10px; font-size: 11.5px; font-weight: 800;
+  color: #fca5a5; margin: 3px 3px 3px 0;
+}
+
+/* ============================================================
+   PANTALLA DE REGISTRO
+============================================================ */
+.reg-card {
+  background: linear-gradient(160deg, #0d2040 0%, #112240 100%);
+  border: 1px solid #1e4080;
+  border-radius: 22px;
+  padding: 28px 20px 24px;
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,.5);
+}
+.reg-logo {
+  font-size: 52px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 14px rgba(34,197,94,.4));
+}
+.reg-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.reg-title span { color: #4ade80; }
+.reg-sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+.reg-field-group {
+  margin-bottom: 14px;
+  text-align: left;
+}
+.reg-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.reg-input {
+  width: 100%;
+  background: rgba(255,255,255,.06);
+  border: 1.5px solid #1e4080;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.reg-input:focus {
+  border-color: #4ade80;
+  box-shadow: 0 0 0 3px rgba(74,222,128,.15);
+}
+.reg-input::placeholder { color: #4d7aaa; font-weight: 600; }
+.reg-error {
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fca5a5;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.reg-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 18px rgba(34,197,94,.4);
+}
+.reg-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(34,197,94,.5); }
+.reg-btn:active { transform: scale(.97); }
+.reg-ranking-btn {
+  width: 100%;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px;
+  padding: 11px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.reg-ranking-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* ============================================================
+   PANTALLA RANKING / CLASIFICACIÓN
+============================================================ */
+.champion-box {
+  background: linear-gradient(145deg, #1a0a00, #3d2000, #1a0a00);
+  border: 2px solid #d97706;
+  border-radius: 20px;
+  padding: 20px 16px;
+  text-align: center;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(217,119,6,.3);
+}
+.champion-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,.15) 0%, transparent 70%);
+}
+.champion-crown { font-size: 42px; margin-bottom: 4px; animation: pulse-crown 2s infinite; }
+@keyframes pulse-crown { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.champion-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: 2px;
+  color: #fbbf24; text-transform: uppercase; margin-bottom: 8px;
+}
+.champion-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 8px;
+}
+.champion-stats {
+  display: flex; justify-content: center; gap: 14px;
+  flex-wrap: wrap; font-size: 12px; font-weight: 800; color: #fcd34d;
+}
+.champion-date { font-size: 10.5px; color: #d97706; margin-top: 6px; }
+
+.ranking-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.ranking-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: 1px; color: #fff;
+}
+.ranking-table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid #1e4080; }
+.ranking-table {
+  width: 100%; border-collapse: collapse; font-size: 12.5px;
+}
+.ranking-table thead { background: #0d2040; }
+.ranking-table th {
+  padding: 10px 12px; text-align: left;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 800; letter-spacing: .8px; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid #1e4080;
+}
+.ranking-table td {
+  padding: 9px 12px; border-bottom: 1px solid rgba(30,64,128,.4);
+  color: var(--text); vertical-align: middle;
+}
+.ranking-table tbody tr:nth-child(even) { background: rgba(255,255,255,.03); }
+.ranking-table tbody tr:hover { background: rgba(255,255,255,.06); }
+.ranking-table tbody tr.rk-gold td { background: rgba(217,119,6,.14); }
+.ranking-table tbody tr.rk-silver td { background: rgba(148,163,184,.1); }
+.ranking-table tbody tr.rk-bronze td { background: rgba(180,83,9,.1); }
+.rk-medal { font-size: 16px; }
+.rk-pts { font-weight: 900; color: #4ade80; font-size: 14px; }
+.rk-acc { font-weight: 800; color: #60a5fa; }
+
+.mini-ranking {
+  margin: 14px 0;
+  background: rgba(255,255,255,.04);
+  border: 1px solid #1e4080;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.btn-danger {
+  background: rgba(239,68,68,.15);
+  border: 1.5px solid rgba(239,68,68,.4);
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fca5a5;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-danger:hover { background: rgba(239,68,68,.25); }
+
+/* ============================================================
+   NOMBRE DE PARTICIPANTE EN HUD
+============================================================ */
+.player-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; padding: 5px 12px;
+  font-size: 12px; font-weight: 800; color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* ============================================================
+   SELECCIÓN DE ROL PROFESIONAL
+============================================================ */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+@media (max-width: 480px) { .role-grid { grid-template-columns: 1fr; } }
+
+.role-card {
+  border: none;
+  border-radius: 18px;
+  padding: 16px 14px;
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: 'Nunito', sans-serif;
+}
+.role-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.05);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.role-card:hover::after { opacity: 1; }
+.role-card:hover  { transform: translateY(-4px); }
+.role-card:active { transform: scale(.97); }
+
+.role-head { display: flex; align-items: center; gap: 10px; }
+.role-ico  {
+  width: 46px; height: 46px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 25px; background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15); flex-shrink: 0;
+}
+.role-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 16px;
+  text-transform: uppercase; letter-spacing: .4px;
+  color: #fff; line-height: 1.15;
+}
+.role-tag { font-size: 10px; font-weight: 700; opacity: .7; color: #fff; }
+.role-desc { font-size: 11.5px; line-height: 1.5; color: rgba(255,255,255,.82); }
+.role-cta {
+  margin-top: 2px; font-size: 10.5px; font-weight: 800;
+  letter-spacing: .6px; text-transform: uppercase; color: #fff;
+  display: flex; align-items: center; gap: 4px; opacity: .85;
+}
+
+.role-card.r-enf { background: linear-gradient(150deg,#0b2a4a,#1d5fa8); box-shadow: 0 6px 26px rgba(29,95,168,.4); }
+.role-card.r-far { background: linear-gradient(150deg,#2e0b4a,#7c3aed); box-shadow: 0 6px 26px rgba(124,58,237,.4); }
+.role-card.r-med { background: linear-gradient(150deg,#06343a,#0e8a96); box-shadow: 0 6px 26px rgba(14,138,150,.4); }
+.role-card.r-gen { background: linear-gradient(150deg,#4a2e06,#d97706); box-shadow: 0 6px 26px rgba(217,119,6,.4); }
+
+/* ============================================================
+   PANTALLA DE ROL → SELECCIÓN DE NIVEL
+============================================================ */
+.role-banner {
+  border-radius: 18px;
+  padding: 18px 16px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.role-banner .role-head { gap: 12px; margin-bottom: 10px; }
+.role-banner .role-ico  { width: 54px; height: 54px; font-size: 30px; }
+.role-banner .role-name { font-size: 20px; }
+.role-banner .role-tag  { font-size: 11px; }
+
+.role-resp {
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255,255,255,.92);
+}
+.role-resp strong { color: #fff; }
+.role-resp-lbl {
+  font-size: 9.5px; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; opacity: .75; margin-bottom: 4px; display:block;
+}
+
+.back-link {
+  background: none; border: none; color: var(--muted);
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12.5px;
+  cursor: pointer; padding: 6px 0; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 5px;
+}
+.back-link:hover { color: var(--text); }
+
+.role-badge-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .5px;
+  padding: 5px 11px; border-radius: 20px; text-transform: uppercase;
+  margin-bottom: 10px; color: #fff;
+}
+
+/* ============================================================
+   PANTALLA JUEGO
+============================================================ */
+.top-bar {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.stat-lbl {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--dim);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1;
+}
+.sv-pts  { color: #fbbf24; }
+.sv-prog { color: var(--muted); font-size: 18px; }
+.sv-life { color: #f87171; font-size: 16px; }
+.sv-time { color: #34d399; }
+.sv-warn { color: #f97316; animation: blink .45s infinite alternate; }
+
+@keyframes blink { from{opacity:1}to{opacity:.3} }
+
+.prog-wrap {
+  background: var(--surface);
+  border-radius: 10px;
+  height: 7px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #86efac);
+  border-radius: 10px;
+  transition: width .5s ease;
+}
+
+/* Tip */
+.tip-box {
+  background: #0c1f5c;
+  border: 1px solid #1d4ed8;
+  border-radius: 12px;
+  padding: 9px 13px;
+  font-size: 12px;
+  color: #93c5fd;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.tip-ico { font-size: 15px; flex-shrink: 0; }
+
+/* Zona del ítem */
+.item-zone {
+  background: var(--surface);
+  border: 2.5px solid var(--border);
+  border-radius: 20px;
+  padding: 22px 16px;
+  text-align: center;
+  margin-bottom: 12px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color .3s, background .3s;
+}
+.item-zone.correct { border-color:#22c55e; background:#031a0a; }
+.item-zone.wrong   { border-color:#ef4444; background:#160303; }
+
+.item-bubble {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 58px;
+  margin-bottom: 12px;
+  transition: transform .25s;
+}
+.item-zone.correct .item-bubble { transform: scale(1.1); border-color:#22c55e; }
+.item-zone.wrong   .item-bubble { transform: scale(.88);  border-color:#ef4444; }
+
+.item-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px,4.5vw,24px);
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 5px;
+}
+
+.item-hint {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  max-width: 300px;
+  line-height: 1.55;
+}
+
+.feedback-ol {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+  gap: 6px;
+}
+.feedback-ol.show { opacity: 1; }
+.feedback-ol.correct { background: rgba(34,197,94,.88); }
+.feedback-ol.wrong   { background: rgba(239,68,68,.88); }
+
+.fb-main {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.fb-sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+}
+
+/* Contenedores */
+.bins-lbl {
+  font-size: 11px;
+  color: var(--dim);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.bins-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 520px) {
+  .bins-grid { grid-template-columns: repeat(2,1fr); }
+}
+
+.bin-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 14px 8px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  transition: transform .15s, opacity .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  text-align: center;
+  min-height: 94px;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+/* Franja de color superior indicando el color normativo */
+.bin-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  border-radius: 16px 16px 0 0;
+}
+.bin-btn.aprovechable::before   { background: #ffffff; border-bottom: 1px solid #c0c8d0; }
+.bin-btn.no-aprovechable::before { background: #111111; }
+.bin-btn.organico::before        { background: #2ea82e; }
+.bin-btn.peligroso::before       { background: #dd1111; }
+.bin-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.08);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.bin-btn:hover:not(:disabled)::after { opacity: 1; }
+.bin-btn:hover:not(:disabled)  { transform: translateY(-5px) scale(1.04); }
+.bin-btn:active:not(:disabled) { transform: scale(.92); }
+.bin-btn:disabled { opacity: .38; cursor: default; }
+
+/* ── Res. 2184/2019: BLANCO = Aprovechable ── */
+.bin-btn.aprovechable {
+  background: linear-gradient(155deg,#e8e8e8,#ffffff);
+  color: #1a1a2e;
+  border: 3px solid #b0b8c1;
+  box-shadow: 0 4px 20px rgba(200,210,220,.5);
+}
+.bin-btn.aprovechable .bin-ico { filter: none; }
+
+/* ── Res. 2184/2019: NEGRO = No Aprovechable ── */
+.bin-btn.no-aprovechable {
+  background: linear-gradient(155deg,#1a1a1a,#2d2d2d);
+  color: #e0e0e0;
+  border: 3px solid #555555;
+  box-shadow: 0 4px 20px rgba(0,0,0,.6);
+}
+
+/* ── Res. 2184/2019: VERDE = Orgánico ── */
+.bin-btn.organico {
+  background: linear-gradient(155deg,#1a4a1a,#2d7a2d);
+  color: #d4f7d4;
+  border: 3px solid #3da83d;
+  box-shadow: 0 4px 20px rgba(45,122,45,.55);
+}
+
+/* ── Res. 591/2024: ROJO = Peligroso ── */
+.bin-btn.peligroso {
+  background: linear-gradient(155deg,#5a0a0a,#c01010);
+  color: #ffe0e0;
+  border: 3px solid #e03030;
+  box-shadow: 0 4px 20px rgba(200,20,20,.55);
+}
+
+.bin-ico { font-size: 34px; }
+.bin-lbl { line-height: 1.3; }
+
+.exit-btn {
+  width: 100%;
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: 2px;
+}
+.exit-btn:hover { background: var(--surface2); }
+
+/* ============================================================
+   COMBO
+============================================================ */
+.combo-badge {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  background: linear-gradient(135deg,#d97706,#f59e0b);
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 18px 36px;
+  border-radius: 20px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform .38s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  box-shadow: 0 8px 40px rgba(245,158,11,.5);
+}
+.combo-badge.show {
+  transform: translate(-50%,-50%) scale(1);
+  opacity: 1;
+}
+
+/* ============================================================
+   PANTALLA RESULTADOS
+============================================================ */
+#result-screen { text-align: center; padding: 22px 10px; }
+
+.res-hero { font-size: 82px; margin-bottom: 10px; }
+
+.res-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(22px,5vw,34px);
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.res-stars { font-size: 40px; margin-bottom: 8px; }
+
+.res-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(46px,10vw,68px);
+  color: #fbbf24;
+  margin-bottom: 16px;
+}
+
+.res-stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 12px;
+  margin-bottom: 16px;
+}
+
+.rs-val { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:32px; color:var(--text); }
+.rs-lbl { font-size:10px; color:var(--dim); font-weight:800; letter-spacing:1px; text-transform:uppercase; }
+
+.mistakes-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.mistakes-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #f87171;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.mistake-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--surface2);
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.55;
+}
+.mistake-row:last-child { border-bottom: none; }
+.mr-emo { font-size: 24px; width: 30px; flex-shrink: 0; text-align: center; }
+.mr-name { font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.ok  { color: #4ade80; font-weight: 800; }
+.bad { color: #f87171; font-weight: 800; }
+.mr-tip { color: #64748b; font-size: 11px; margin-top: 2px; }
+
+/* norm reminder in results */
+.norm-reminder {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 18px;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.7;
+  text-align: left;
+}
+.norm-reminder strong { color: var(--text); }
+
+.btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+.btn-primary {
+  background: linear-gradient(135deg,#166534,#22c55e);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 32px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  cursor: pointer;
+  box-shadow: 0 4px 22px rgba(34,197,94,.4);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-secondary {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.btn-primary:hover  { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(34,197,94,.5); }
+.btn-primary:active { transform: scale(.96); }
+.btn-secondary:hover  { transform: translateY(-2px); background: var(--surface2); }
+.btn-secondary:active { transform: scale(.96); }
+
+/* ============================================================
+   BOTÓN DE SONIDO FLOTANTE
+============================================================ */
+#sound-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 18px;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.18);
+  background: linear-gradient(135deg, #0d2040, #1b3460);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5);
+  transition: transform .2s, box-shadow .2s;
+  backdrop-filter: blur(6px);
+}
+#sound-toggle:hover { transform: scale(1.12); box-shadow: 0 6px 32px rgba(59,130,246,.4); }
+#sound-toggle:active { transform: scale(.92); }
+#sound-toggle.muted { opacity: .5; }
+
+/* Notificación de activación de audio */
+#audio-notice {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  z-index: 9998;
+  background: linear-gradient(135deg, #0d2040ee, #1b3460ee);
+  border: 1px solid rgba(59,130,246,.4);
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #93c5fd;
+  max-width: 200px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s, transform .4s;
+  pointer-events: none;
+}
+#audio-notice.show { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.site-footer {
+  margin-top: 28px;
+  font-size: 10.5px;
+  color: var(--dim);
+  text-align: center;
+  padding: 0 16px;
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  max-width: 840px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CABECERA INSTITUCIONAL
+============================================================ -->
+<header class="inst-header">
+  <div class="inst-top">
+    <div class="inst-logos">
+      <div class="inst-logo-box">🏥</div>
+      <div class="inst-logo-box">♻️</div>
+    </div>
+    <div class="norm-pills">
+      <span class="norm-pill pill-res2184">Res. 2184/2019</span>
+      <span class="norm-pill pill-dec351">Decreto 351/2014</span>
+      <span class="norm-pill pill-res591">Res. 591/2024</span>
+    </div>
+  </div>
+  <div class="inst-title-area">
+    <h1 class="main-title">
+      Gamificación para la <span>Gestión Integral</span> de los Residuos Sólidos<br>
+      Generados en las Instituciones de Atención en Salud
+    </h1>
+    <p class="title-sub">Herramienta didáctica · Colombia · PGIRASA</p>
+    <div class="title-divider"></div>
+  </div>
+  <!-- Bloque de autores — esquina inferior izquierda -->
+  <div class="autores-box">
+    <span class="autores-lbl">Presentado por</span>
+    <span class="autores-nombre">Karlena Lisset Álvarez Rojas</span>
+    <span class="autores-nombre">Marina Yulieth Contreras Vera</span>
+    <span class="autores-nombre">Nicolas Enrique Annichiárico Jiménez</span>
+    <span class="autores-nombre">Martha Muñoz</span>
+  </div>
+</header>
+
+<!-- BOTÓN DE SONIDO FLOTANTE -->
+<button id="sound-toggle" title="Activar/Silenciar sonido" onclick="toggleSound()">🔊</button>
+<div id="audio-notice">🎵 Toca cualquier botón para activar el audio</div>
+
+<div id="app">
+
+<!-- ============================================================
+     PANTALLA DE REGISTRO DE PARTICIPANTE
+============================================================ -->
+<div id="register-screen" class="screen active">
+
+  <div class="reg-card">
+    <div class="reg-logo">🏥</div>
+    <div class="reg-title">REGISTRO DE<br><span>PARTICIPANTE</span></div>
+    <p class="reg-sub">Ingresa tus datos para iniciar la experiencia de aprendizaje en gestión de residuos hospitalarios.</p>
+
+    <div class="reg-field-group">
+      <label class="reg-label">👤 Nombre completo</label>
+      <input type="text" id="reg-nombre" class="reg-input" placeholder="Ej: Laura Sánchez Gómez" maxlength="60" autocomplete="off">
+    </div>
+
+    <div class="reg-field-group">
+      <label class="reg-label">🏢 Área o dependencia</label>
+      <input type="text" id="reg-area" class="reg-input" placeholder="Ej: Urgencias, UCI, Farmacia..." maxlength="60" autocomplete="off">
+    </div>
+
+    <div class="reg-field-group">
+      <label class="reg-label">🆔 Cargo o profesión</label>
+      <input type="text" id="reg-cargo" class="reg-input" placeholder="Ej: Enfermero jefe, Médico residente..." maxlength="60" autocomplete="off">
+    </div>
+
+    <div id="reg-error" class="reg-error" style="display:none">⚠️ Por favor ingrese su nombre para continuar.</div>
+
+    <button class="reg-btn" onclick="registrarParticipante()">
+      🚀 INICIAR JUEGO
+    </button>
+
+    <button class="reg-btn" style="background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 4px 18px rgba(37,99,235,.4);margin-bottom:10px;" onclick="iniciarEvaluacionPrevia()">
+      📝 Prueba Diagnóstica
+    </button>
+
+    <button class="reg-ranking-btn" onclick="mostrarRanking()">
+      🏆 Ver tabla de clasificación
+    </button>
+  </div>
+
+</div><!-- /register-screen -->
+
+<!-- ============================================================
+     PANTALLA: PRUEBA DIAGNÓSTICA
+============================================================ -->
+<div id="preeval-screen" class="screen">
+
+  <div class="preeval-header">
+    <div class="preeval-icon">📝</div>
+    <div class="preeval-title">PRUEBA<br><span>DIAGNÓSTICA</span></div>
+    <p class="preeval-sub">Clasifica cada residuo sin ayudas ni pistas. Los resultados determinarán tu nivel de inicio.</p>
+    <div class="preeval-hud">
+      <div class="preeval-hud-item">
+        <span class="preeval-hud-val" id="pe-prg">1/10</span>
+        <span class="preeval-hud-lbl">Pregunta</span>
+      </div>
+      <div class="preeval-hud-item">
+        <span class="preeval-hud-val" id="pe-ok">0</span>
+        <span class="preeval-hud-lbl">Correctas</span>
+      </div>
+    </div>
+    <div class="preeval-prog-bar"><div class="preeval-prog-fill" id="pe-bar"></div></div>
+  </div>
+
+  <div class="preeval-item-card" id="pe-card">
+    <div class="pe-emoji" id="pe-emo">♻️</div>
+    <div class="pe-name" id="pe-name">Cargando...</div>
+    <div class="pe-question">¿Dónde debe desecharse este residuo?</div>
+  </div>
+
+  <div class="preeval-bins">
+    <button class="pe-bin pe-bin-white" onclick="responderPreeval('aprovechable')">
+      <span class="pe-bin-ico">♻️</span>
+      <span class="pe-bin-lbl">Bolsa<br>BLANCA</span>
+      <span class="pe-bin-sub">Aprovechable</span>
+    </button>
+    <button class="pe-bin pe-bin-black" onclick="responderPreeval('no-aprovechable')">
+      <span class="pe-bin-ico">🗑️</span>
+      <span class="pe-bin-lbl">Bolsa<br>NEGRA</span>
+      <span class="pe-bin-sub">No Aprovechable</span>
+    </button>
+    <button class="pe-bin pe-bin-green" onclick="responderPreeval('organico')">
+      <span class="pe-bin-ico">🌱</span>
+      <span class="pe-bin-lbl">Bolsa<br>VERDE</span>
+      <span class="pe-bin-sub">Orgánico</span>
+    </button>
+    <button class="pe-bin pe-bin-red" onclick="responderPreeval('peligroso')">
+      <span class="pe-bin-ico">⚠️</span>
+      <span class="pe-bin-lbl">Bolsa<br>ROJA</span>
+      <span class="pe-bin-sub">Peligroso</span>
+    </button>
+  </div>
+
+</div><!-- /preeval-screen -->
+
+<!-- ============================================================
+     PANTALLA: RESULTADO DE EVALUACIÓN PREVIA
+============================================================ -->
+<div id="preeval-result-screen" class="screen">
+
+  <div class="prerres-hero" id="pre-icon">📊</div>
+  <div class="prerres-title" id="pre-title">Evaluando tu nivel...</div>
+
+  <div class="prerres-score-box">
+    <div class="prerres-score" id="pre-score">0/10</div>
+    <div class="prerres-score-lbl">Respuestas correctas</div>
+  </div>
+
+  <div class="prerres-nivel-badge" id="pre-nivel-badge">
+    <span id="pre-nivel-ico">🔴</span>
+    <span id="pre-nivel-txt">Nivel de inducción</span>
+  </div>
+
+  <div class="prerres-mensaje" id="pre-mensaje"></div>
+
+  <div class="prerres-areas" id="pre-areas" style="display:none">
+    <div class="prerres-areas-title">📌 Áreas a fortalecer</div>
+    <div id="pre-areas-list"></div>
+  </div>
+
+  <div class="btn-row" style="margin-top:20px">
+    <button class="btn-primary" id="pre-btn-nivel" onclick="irANivelRecomendado()">
+      ▶️ Ir a mi nivel recomendado
+    </button>
+    <button class="btn-secondary" onclick="showScreen('menu-screen')">
+      🗂️ Ir al menú principal
+    </button>
+  </div>
+
+</div><!-- /preeval-result-screen -->
+
+<div id="menu-screen" class="screen">
+
+  <!-- Selección de rol profesional -->
+  <div class="sec-title" style="margin-top:22px;">👥 Selecciona tu rol profesional</div>
+  <p style="font-size:12px;color:var(--muted);font-weight:600;margin:-4px 0 14px;line-height:1.6;">
+    Cada rol de la IAS genera y clasifica residuos distintos. Elige tu labor para practicar con los casos reales que enfrentas en tu turno, según el PGIRASA institucional.
+  </p>
+
+  <div class="role-grid">
+    <button class="role-card r-enf" onclick="selectRole('enf')">
+      <div class="role-head">
+        <div class="role-ico">👩‍⚕️</div>
+        <div>
+          <div class="role-name">Enfermería</div>
+          <div class="role-tag">Atención directa al paciente</div>
+        </div>
+      </div>
+      <div class="role-desc">Segregación en el punto de generación: curaciones, venopunción, cortopunzantes y residuos biosanitarios.</div>
+      <div class="role-cta">Jugar este rol →</div>
+    </button>
+
+    <button class="role-card r-far" onclick="selectRole('far')">
+      <div class="role-head">
+        <div class="role-ico">💊</div>
+        <div>
+          <div class="role-name">Auxiliar de Farmacia</div>
+          <div class="role-tag">Gestión de medicamentos</div>
+        </div>
+      </div>
+      <div class="role-desc">Medicamentos vencidos, parcialmente consumidos, citotóxicos y empaques farmacéuticos.</div>
+      <div class="role-cta">Jugar este rol →</div>
+    </button>
+
+    <button class="role-card r-med" onclick="selectRole('med')">
+      <div class="role-head">
+        <div class="role-ico">🩺</div>
+        <div>
+          <div class="role-name">Médico</div>
+          <div class="role-tag">Procedimientos clínicos</div>
+        </div>
+      </div>
+      <div class="role-desc">Bisturíes, muestras biológicas, reactivos de laboratorio y residuos de diagnóstico.</div>
+      <div class="role-cta">Jugar este rol →</div>
+    </button>
+
+    <button class="role-card r-gen" onclick="selectRole('gen')">
+      <div class="role-head">
+        <div class="role-ico">🏥</div>
+        <div>
+          <div class="role-name">Equipo PGIRASA</div>
+          <div class="role-tag">Modo integral · todos los roles</div>
+        </div>
+      </div>
+      <div class="role-desc">El reto completo de la IAS: residuos de todas las áreas, para coordinadores y comités de gestión ambiental.</div>
+      <div class="role-cta">Jugar este rol →</div>
+    </button>
+  </div>
+
+</div><!-- /menu-screen -->
+
+<!-- ============================================================
+     PANTALLA DE ROL → SELECCIÓN DE NIVEL
+============================================================ -->
+<div id="role-screen" class="screen">
+
+  <button class="back-link" onclick="showScreen('menu-screen')">← Cambiar de rol profesional</button>
+
+  <div class="role-banner" id="role-banner">
+    <div class="role-head">
+      <div class="role-ico" id="rb-ico">👩‍⚕️</div>
+      <div>
+        <div class="role-name" id="rb-name">Enfermería</div>
+        <div class="role-tag" id="rb-tag">Atención directa al paciente</div>
+      </div>
+    </div>
+    <div class="role-resp">
+      <span class="role-resp-lbl">📋 Tu responsabilidad según el PGIRASA</span>
+      <span id="rb-resp"></span>
+    </div>
+  </div>
+
+  <div class="sec-title">🎮 Selecciona el nivel</div>
+
+  <div class="level-grid">
+    <button class="level-btn easy" onclick="startGame('easy')">
+      <span class="lvl-ico">🌱</span>
+      <span class="lvl-nm">INDUCCIÓN</span>
+      <span class="lvl-info">10 residuos · 60 segundos<br>Con ayudas y pistas</span>
+    </button>
+    <button class="level-btn medium" onclick="startGame('medium')">
+      <span class="lvl-ico">⚕️</span>
+      <span class="lvl-nm">PRÁCTICA CLÍNICA</span>
+      <span class="lvl-info">15 residuos · 50 segundos<br>Sin ayudas</span>
+    </button>
+    <button class="level-btn hard" onclick="startGame('hard')">
+      <span class="lvl-ico">🎓</span>
+      <span class="lvl-nm">EVALUACIÓN FINAL</span>
+      <span class="lvl-info">40 residuos · 120 segundos<br>Evaluación integral</span>
+    </button>
+  </div>
+
+</div><!-- /role-screen -->
+
+<!-- ============================================================
+     PANTALLA DE JUEGO
+============================================================ -->
+<div id="game-screen" class="screen">
+
+  <div class="role-badge-pill" id="game-role-badge" style="background:#1d5fa8;">
+    <span id="grb-ico">👩‍⚕️</span><span id="grb-name">Enfermería</span>
+  </div>
+
+  <div class="top-bar">
+    <div class="stat-card">
+      <div class="stat-lbl">Puntos</div>
+      <div class="stat-val sv-pts" id="s-pts">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Progreso</div>
+      <div class="stat-val sv-prog" id="s-prg">0/10</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Vidas</div>
+      <div class="stat-val sv-life" id="s-lif">❤️❤️❤️</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Tiempo</div>
+      <div class="stat-val sv-time" id="s-tim">60</div>
+    </div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+  </div>
+
+  <div class="tip-box" id="tip-box" style="display:none">
+    <span class="tip-ico">💡</span>
+    <span id="tip-txt"></span>
+  </div>
+
+  <div class="item-zone" id="item-zone">
+    <div class="item-bubble" id="item-emo">🗑️</div>
+    <div class="item-name" id="item-name">Cargando...</div>
+    <div class="item-hint" id="item-hint"></div>
+    <div class="feedback-ol" id="feedback-ol">
+      <span class="fb-main" id="fb-main"></span>
+      <span class="fb-sub"  id="fb-sub"></span>
+    </div>
+  </div>
+
+  <div class="bins-lbl">¿En cuál contenedor va este residuo? · Res. 2184/2019 · Res. 591/2024</div>
+  <div class="bins-grid">
+    <button class="bin-btn aprovechable" id="b-aprovechable" onclick="classify('aprovechable')">
+      <span class="bin-ico">♻️</span>
+      <span class="bin-lbl">Aprovechable<br><small style="font-size:9px;opacity:.7">Bolsa BLANCA</small></span>
+    </button>
+    <button class="bin-btn no-aprovechable" id="b-no-aprovechable" onclick="classify('no-aprovechable')">
+      <span class="bin-ico">🗑️</span>
+      <span class="bin-lbl">No Aprovechable<br><small style="font-size:9px;opacity:.7">Bolsa NEGRA</small></span>
+    </button>
+    <button class="bin-btn organico" id="b-organico" onclick="classify('organico')">
+      <span class="bin-ico">🌱</span>
+      <span class="bin-lbl">Orgánico<br><small style="font-size:9px;opacity:.7">Bolsa VERDE</small></span>
+    </button>
+    <button class="bin-btn peligroso" id="b-peligroso" onclick="classify('peligroso')">
+      <span class="bin-ico">⚠️</span>
+      <span class="bin-lbl">Peligroso<br><small style="font-size:9px;opacity:.7">Bolsa ROJA</small></span>
+    </button>
+  </div>
+
+  <button class="exit-btn" onclick="if(confirm('¿Salir de la partida?')){clearInterval(G.iv);SFX.stopBgMusic();showScreen('role-screen');}">
+    ↩️ Volver a niveles de <span id="exit-role-name">Enfermería</span>
+  </button>
+
+</div><!-- /game-screen -->
+
+<!-- ============================================================
+     PANTALLA RESULTADOS
+============================================================ -->
+<div id="result-screen" class="screen">
+
+  <div class="res-hero" id="r-icon">🏆</div>
+  <div class="res-title" id="r-title">¡Excelente!</div>
+  <div class="res-stars" id="r-stars">⭐⭐⭐</div>
+  <div class="res-score" id="r-score">0 pts</div>
+
+  <div class="res-stats">
+    <div><div class="rs-val" id="r-ok">0</div><div class="rs-lbl">✅ Correctas</div></div>
+    <div><div class="rs-val" id="r-err">0</div><div class="rs-lbl">❌ Errores</div></div>
+    <div><div class="rs-val" id="r-acc">0%</div><div class="rs-lbl">🎯 Precisión</div></div>
+  </div>
+
+  <div class="mistakes-box" id="mis-box" style="display:none">
+    <div class="mistakes-title">📋 Residuos para repasar</div>
+    <div id="mis-list"></div>
+  </div>
+
+  <div class="role-badge-pill" id="res-role-badge" style="background:#1d5fa8;">
+    <span id="rrb-ico">👩‍⚕️</span><span id="rrb-name">Enfermería</span>
+  </div>
+
+  <div class="norm-reminder" id="norm-reminder">
+    <strong>Recuerda:</strong> Según la <strong>Resolución 591 de 2024</strong> (MinSalud + MinAmbiente), toda IAS debe contar con un <strong>PGIRASA</strong> actualizado. La <strong>Resolución 2184 de 2019</strong> establece los colores blanco, negro y verde para residuos no peligrosos. Los residuos peligrosos siguen usando <strong>bolsa roja</strong> conforme al manual adoptado por la Res. 591/2024.
+  </div>
+
+  <!-- Tabla de clasificación rápida en resultados -->
+  <div class="mini-ranking" id="mini-ranking">
+    <div class="ranking-title" style="font-size:14px;margin-bottom:10px">📊 TABLA DE CLASIFICACIÓN</div>
+    <div class="ranking-table-wrap">
+      <table class="ranking-table">
+        <thead>
+          <tr><th>#</th><th>Participante</th><th>Puntaje</th><th>Precisión</th></tr>
+        </thead>
+        <tbody id="mini-ranking-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="restartLevel()">🔄 Jugar de nuevo</button>
+    <button class="btn-secondary" onclick="showScreen('role-screen')">📊 Otro nivel</button>
+    <button class="btn-secondary" onclick="mostrarRanking()">🏆 Tabla completa</button>
+    <button class="btn-secondary" onclick="showScreen('menu-screen')">👥 Cambiar de rol</button>
+  </div>
+
+</div><!-- /result-screen -->
+
+<!-- ============================================================
+     PANTALLA DE RANKING / TABLA DE CLASIFICACIÓN
+============================================================ -->
+<div id="ranking-screen" class="screen">
+
+  <!-- Campeón -->
+  <div class="champion-box" id="champion-box">
+    <div class="champion-crown">🏆</div>
+    <div class="champion-title">CAMPEÓN DEL JUEGO</div>
+    <div class="champion-name" id="champ-name">—</div>
+    <div class="champion-stats">
+      <span id="champ-pts">Puntaje: —</span>
+      <span id="champ-lvl">Nivel: —</span>
+      <span id="champ-acc">Precisión: —</span>
+    </div>
+    <div class="champion-date" id="champ-date"></div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="ranking-header">
+    <div class="ranking-title">📊 TABLA DE CLASIFICACIÓN</div>
+  </div>
+
+  <div class="ranking-table-wrap">
+    <table class="ranking-table" id="ranking-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Participante</th>
+          <th>Rol</th>
+          <th>Nivel</th>
+          <th>Puntaje</th>
+          <th>Precisión</th>
+        </tr>
+      </thead>
+      <tbody id="ranking-body">
+        <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Sin registros aún</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="btn-row" style="margin-top:16px">
+    <button class="btn-primary" onclick="showScreen('register-screen')">🎮 Jugar</button>
+    <button class="btn-secondary" onclick="verHistorial()">📋 Ver historial completo</button>
+    <button class="btn-danger" onclick="reiniciarRanking()">🗑️ Reiniciar ranking</button>
+  </div>
+
+  <!-- Historial modal -->
+  <div id="historial-box" style="display:none;margin-top:18px">
+    <div class="sec-title" style="margin-bottom:8px">📋 Historial de participantes</div>
+    <div class="ranking-table-wrap">
+      <table class="ranking-table">
+        <thead>
+          <tr><th>#</th><th>Participante</th><th>Área</th><th>Rol</th><th>Nivel</th><th>Puntaje</th><th>Precisión</th><th>Fecha</th></tr>
+        </thead>
+        <tbody id="historial-body"></tbody>
+      </table>
+    </div>
+    <button class="btn-secondary" style="margin-top:10px" onclick="el('historial-box').style.display='none'">Cerrar historial</button>
+  </div>
+
+</div><!-- /ranking-screen -->
+
+</div><!-- /app -->
+
+<!-- Combo -->
+<div class="combo-badge" id="combo-badge">🔥 ¡COMBO!</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="site-footer">
+  <strong>Gamificación para la Gestión Integral de los Residuos Sólidos Generados en las Instituciones de Atención en Salud</strong><br>
+  Normativa: Resolución 2184 de 2019 (MinAmbiente) · Decreto 351 de 2014 (MinSalud) · Resolución Conjunta 591 de 2024 (MinSalud + MinAmbiente)<br>
+  Herramienta de uso educativo y de capacitación · Colombia
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+// ======================================================
+// ROLES PROFESIONALES — IAS (Decreto 351/2014 + Res. 591/2024)
+// ======================================================
+const ROLES = {
+  enf: {
+    name: 'Enfermería',
+    tag:  'Atención directa al paciente',
+    icon: '👩‍⚕️',
+    color: '#1d5fa8',
+    cls:  'r-enf',
+    resp: 'El personal de enfermería segrega en el <strong>punto de generación</strong>, inmediatamente después de cada procedimiento. Los cortopunzantes van al guardián rojo <strong>sin reencapuchar</strong> la aguja (Decreto 351/2014, Art. 12 · Res. 591/2024).',
+  },
+  far: {
+    name: 'Auxiliar de Farmacia',
+    tag:  'Gestión de medicamentos',
+    icon: '💊',
+    color: '#7c3aed',
+    cls:  'r-far',
+    resp: 'Los medicamentos vencidos, parcialmente consumidos o derramados se gestionan como <strong>residuos peligrosos con características de toxicidad</strong> (Res. 591/2024). Nunca se mezclan con el inventario activo ni con residuos ordinarios.',
+  },
+  med: {
+    name: 'Médico',
+    tag:  'Procedimientos clínicos',
+    icon: '🩺',
+    color: '#0e8a96',
+    cls:  'r-med',
+    resp: 'El cuerpo médico garantiza la segregación correcta de <strong>muestras biológicas, cortopunzantes y reactivos</strong> generados en procedimientos diagnósticos y quirúrgicos, dando cumplimiento al PGIRASA institucional.',
+  },
+  gen: {
+    name: 'Equipo PGIRASA',
+    tag:  'Modo integral · todos los roles',
+    icon: '🏥',
+    color: '#d97706',
+    cls:  'r-gen',
+    resp: 'El PGIRASA es responsabilidad de <strong>toda la institución</strong>: cada profesional clasifica en la fuente y el comité de gestión ambiental y sanitaria supervisa el cumplimiento integral del Decreto 351/2014 y la Res. 591/2024.',
+  },
+};
+
+// ======================================================
+// BASE DE DATOS DE RESIDUOS — actualizada Res.591/2024
+// Cada ítem indica los roles de la IAS que típicamente lo generan
+// ======================================================
+const ITEMS = [
+  // ── APROVECHABLES ── bolsa BLANCA (Res. 2184/2019)
+  { e:'📄', n:'Hoja de papel limpia (registro impreso descartado)',
+    c:'aprovechable', d:1, roles:['enf','far','med'],
+    h:'Papel sin contaminación biológica → Bolsa BLANCA (Res. 2184/2019). Se puede reciclar y reincorporar a la cadena productiva.' },
+
+  { e:'📦', n:'Caja de cartón limpia de insumos',
+    c:'aprovechable', d:1, roles:['enf','far','med'],
+    h:'Cartón limpio y seco → Bolsa BLANCA. Material aprovechable según Res. 2184/2019.' },
+
+  { e:'🍶', n:'Botella plástica vacía y limpia',
+    c:'aprovechable', d:1, roles:['enf','far','med'],
+    h:'Plástico sin residuos biológicos → Bolsa BLANCA. Res. 2184/2019 lo clasifica como aprovechable.' },
+
+  { e:'🥛', n:'Frasco de vidrio vacío y limpio (sin medicamento)',
+    c:'aprovechable', d:2, roles:['far','enf'],
+    h:'Vidrio limpio, sin residuo de medicamento → Bolsa BLANCA. Múltiples ciclos de reciclaje sin perder calidad.' },
+
+  { e:'🗞️', n:'Revistas de sala de espera',
+    c:'aprovechable', d:1, roles:['enf','far','med'],
+    h:'Papel limpio → Bolsa BLANCA (Res. 2184/2019). Aprovechable si no tiene contacto biológico.' },
+
+  { e:'📁', n:'Carpeta de archivo administrativo usada',
+    c:'aprovechable', d:2, roles:['enf','far','med'],
+    h:'Cartón/papel sin contaminación → Bolsa BLANCA. Aprovechable según Res. 2184/2019.' },
+
+  { e:'🔩', n:'Partes metálicas de equipo (sin contacto biológico)',
+    c:'aprovechable', d:3, roles:['med','enf'],
+    h:'Metales sin contaminación biológica → Bolsa BLANCA. Res. 2184/2019 incluye metales entre los aprovechables.' },
+
+  { e:'💊', n:'Blíster de pastillas vacío (sin residuo)',
+    c:'aprovechable', d:3, roles:['far','enf'],
+    h:'Aluminio + plástico VACÍO y limpio → Bolsa BLANCA. Si contiene restos de medicamento → ROJO (peligroso).' },
+
+  { e:'🖨️', n:'Resma de papel sin usar / papel de impresora',
+    c:'aprovechable', d:2, roles:['enf','far','med'],
+    h:'Papel limpio → Bolsa BLANCA. Separar en la fuente es obligatorio según Decreto 351/2014.' },
+
+  { e:'📭', n:'Caja de cartón vacía de medicamento',
+    c:'aprovechable', d:1, roles:['far'],
+    h:'Empaque secundario sin contacto con el medicamento → Bolsa BLANCA. Aprovechable según Res. 2184/2019.' },
+
+  // ── NO APROVECHABLES ── bolsa NEGRA (Res. 2184/2019)
+  { e:'🧻', n:'Papel toalla usado (sin sangre)',
+    c:'no-aprovechable', d:1, roles:['enf','far','med'],
+    h:'Papel húmedo/sucio sin valor de reciclaje → Bolsa NEGRA (Res. 2184/2019). No va a rojo si no tiene contacto biológico clínico.' },
+
+  { e:'🪣', n:'Bandeja de icopor / poliestireno (cafetería)',
+    c:'no-aprovechable', d:1, roles:['enf','far','med'],
+    h:'Icopor no es aceptado por recicladores → Bolsa NEGRA. Relleno sanitario según Res. 2184/2019.' },
+
+  { e:'🍴', n:'Cubiertos plásticos usados (cafetería)',
+    c:'no-aprovechable', d:2, roles:['enf','far','med'],
+    h:'Plástico mezclado o sucio → Bolsa NEGRA. Sin valor de reciclaje.' },
+
+  { e:'🧃', n:'Caja de jugo Tetra Pak',
+    c:'no-aprovechable', d:2, roles:['enf','far','med'],
+    h:'Empaque multicapa (cartón+aluminio+plástico) → Bolsa NEGRA. Difícil separación según Res. 2184/2019.' },
+
+  { e:'🖊️', n:'Bolígrafo sin tinta',
+    c:'no-aprovechable', d:2, roles:['enf','far','med'],
+    h:'Plástico mixto no separable → Bolsa NEGRA. Sin valor de aprovechamiento.' },
+
+  { e:'🎨', n:'Cinta adhesiva de embalaje',
+    c:'no-aprovechable', d:3, roles:['enf','far','med'],
+    h:'Mezcla de materiales → Bolsa NEGRA. No se puede separar para reciclaje.' },
+
+  { e:'🧼', n:'Jabón de barra agotado',
+    c:'no-aprovechable', d:2, roles:['enf','med'],
+    h:'Residuo de consumo personal sin riesgo biológico clínico → Bolsa NEGRA.' },
+
+  { e:'🩺', n:'Estetoscopio roto (sin contacto con paciente infectado)',
+    c:'no-aprovechable', d:3, roles:['med','enf'],
+    h:'Equipo médico sin riesgo biológico confirmado → Bolsa NEGRA. Si tuvo contacto biológico → evaluar como peligroso (Res.591/2024).' },
+
+  { e:'📃', n:'Envoltura externa de jeringa estéril (sin contacto)',
+    c:'no-aprovechable', d:2, roles:['enf','med'],
+    h:'Papel/plástico de empaque que nunca tocó al paciente → Bolsa NEGRA. No es peligroso por sí mismo.' },
+
+  { e:'🧤', n:'Empaque vacío de guantes sin usar',
+    c:'no-aprovechable', d:2, roles:['enf','med','far'],
+    h:'Caja o bolsa del empaque de guantes nuevos → Bolsa NEGRA. Distinto del guante ya usado en procedimiento.' },
+
+  { e:'💢', n:'Blíster roto SIN residuo de medicamento',
+    c:'no-aprovechable', d:2, roles:['far'],
+    h:'Empaque plástico/aluminio vacío y sin restos → Bolsa NEGRA. Si tuviera residuo de medicamento → ROJO.' },
+
+  // ── ORGÁNICOS ── bolsa VERDE (Res. 2184/2019)
+  { e:'🍎', n:'Restos de fruta (cafetería)',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Restos de alimentos biodegradables → Bolsa VERDE (Res. 2184/2019). Aptos para compostaje.' },
+
+  { e:'🌿', n:'Ramas y hojas del jardín institucional',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Material vegetal → Bolsa VERDE. Biodegradable sin sustancias peligrosas.' },
+
+  { e:'🥗', n:'Sobras de ensalada (sin contacto clínico)',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Alimentos sin fluidos corporales → Bolsa VERDE (Res. 2184/2019). Separación obligatoria Dec. 351/2014.' },
+
+  { e:'☕', n:'Borra de café y filtros de papel',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Residuo orgánico → Bolsa VERDE. Excelente para compostaje institucional.' },
+
+  { e:'🍌', n:'Cáscara de plátano y frutas',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Cáscaras vegetales → Bolsa VERDE. Biodegradables, no contaminados.' },
+
+  { e:'🌱', n:'Plantas secas de maceta',
+    c:'organico', d:2, roles:['enf','far','med'],
+    h:'Material vegetal sin sustancias tóxicas → Bolsa VERDE (Res. 2184/2019).' },
+
+  { e:'🥚', n:'Cáscara de huevo (cocina/cafetería)',
+    c:'organico', d:2, roles:['enf','far','med'],
+    h:'Orgánico compostable → Bolsa VERDE. No tiene riesgo biológico clínico.' },
+
+  { e:'🫖', n:'Bolsa de té usada',
+    c:'organico', d:3, roles:['enf','far','med'],
+    h:'Té + filtro de papel biodegradable → Bolsa VERDE. Res. 2184/2019: orgánico aprovechable para compost.' },
+
+  { e:'🥦', n:'Verduras sobrantes del comedor hospitalario',
+    c:'organico', d:2, roles:['enf','far','med'],
+    h:'Restos vegetales sin contacto clínico → Bolsa VERDE. Gestión obligatoria según Dec. 351/2014.' },
+
+  // ── PELIGROSOS ── bolsa ROJA / Guardián ROJO (Res. 591/2024)
+  // Enfermería — atención directa al paciente
+  { e:'💉', n:'Jeringa usada con aguja',
+    c:'peligroso', d:1, roles:['enf','med'],
+    h:'Cortopunzante con riesgo biológico → Guardián ROJO (Res. 591/2024). NUNCA reencapuchar ni en bolsa ordinaria.' },
+
+  { e:'🩹', n:'Gasa o apósito con sangre',
+    c:'peligroso', d:1, roles:['enf','med'],
+    h:'Material biosanitario con fluidos → Bolsa ROJA (Res. 591/2024). Riesgo biológico-infeccioso. Tratamiento obligatorio.' },
+
+  { e:'🧤', n:'Guantes de látex usados en procedimiento',
+    c:'peligroso', d:1, roles:['enf','med'],
+    h:'EPP con contacto biológico → Bolsa ROJA (Res. 591/2024). Residuo biosanitario infeccioso.' },
+
+  { e:'🩼', n:'Catéter venoso central usado',
+    c:'peligroso', d:3, roles:['enf','med'],
+    h:'Dispositivo con contacto sanguíneo → Bolsa ROJA / biosanitario (Res. 591/2024). Riesgo infeccioso alto.' },
+
+  { e:'🚰', n:'Sonda vesical usada',
+    c:'peligroso', d:2, roles:['enf'],
+    h:'Dispositivo con contacto con fluidos corporales → Bolsa ROJA (Res. 591/2024). Residuo biosanitario.' },
+
+  { e:'🩻', n:'Vendaje o apósito con secreciones',
+    c:'peligroso', d:2, roles:['enf'],
+    h:'Material con secreciones del paciente → Bolsa ROJA (Res. 591/2024). Riesgo biológico-infeccioso.' },
+
+  { e:'🩱', n:'Ropa hospitalaria con sangre',
+    c:'peligroso', d:3, roles:['enf'],
+    h:'Textil contaminado con fluidos → Bolsa ROJA (Res. 591/2024). Requiere lavado hospitalario especializado o incineración.' },
+
+  { e:'😷', n:'Mascarilla N95 / quirúrgica usada',
+    c:'peligroso', d:2, roles:['enf','med','far'],
+    h:'EPP con posible carga viral → Bolsa ROJA (Res. 591/2024). Residuo biosanitario. No va a bolsa negra ni verde.' },
+
+  { e:'🧪', n:'Bolsa de drenaje quirúrgico usada',
+    c:'peligroso', d:3, roles:['enf','med'],
+    h:'Contenido con fluidos corporales → Bolsa ROJA (Res. 591/2024). Manejo como residuo biosanitario.' },
+
+  { e:'🪥', n:'Cepillo de dientes de paciente hospitalizado',
+    c:'peligroso', d:3, roles:['enf'],
+    h:'Artículo personal con posible carga microbiana → Bolsa ROJA (Res. 591/2024). Residuo biosanitario infeccioso.' },
+
+  { e:'🩸', n:'Bolsa de sangre vencida o rechazada',
+    c:'peligroso', d:3, roles:['enf','med'],
+    h:'Hemoderivado → Bolsa ROJA (Res. 591/2024). Residuo biológico de alto riesgo infeccioso.' },
+
+  { e:'💧', n:'Suero fisiológico abierto y sin utilizar',
+    c:'peligroso', d:3, roles:['enf'],
+    h:'Una vez abierto puede contaminarse → Bolsa ROJA (Res. 591/2024). Precaución: posible contaminación.' },
+
+  // Auxiliar de Farmacia — gestión de medicamentos
+  { e:'💊', n:'Medicamentos vencidos o parcialmente consumidos',
+    c:'peligroso', d:1, roles:['far','enf'],
+    h:'Fármacos → Bolsa ROJA (Res. 591/2024). Residuo peligroso con características de toxicidad. Gestión externa especializada.' },
+
+  { e:'🟣', n:'Blíster con residuo de medicamento',
+    c:'peligroso', d:2, roles:['far'],
+    h:'Empaque con restos del fármaco → Bolsa ROJA (Res. 591/2024). Diferente del blíster vacío, que sí es aprovechable.' },
+
+  { e:'🧴', n:'Ampolleta de medicamento rota con residuo',
+    c:'peligroso', d:2, roles:['far','enf'],
+    h:'Vidrio con residuo farmacológico y riesgo cortopunzante → Guardián ROJO (Res. 591/2024).' },
+
+  { e:'🍯', n:'Jarabe vencido sin terminar',
+    c:'peligroso', d:2, roles:['far'],
+    h:'Fármaco líquido vencido → Bolsa ROJA (Res. 591/2024). No se vierte al desagüe ni a residuos ordinarios.' },
+
+  { e:'🧫', n:'Vial de medicamento con residuo',
+    c:'peligroso', d:2, roles:['far','enf'],
+    h:'Envase con remanente del fármaco → Bolsa ROJA (Res. 591/2024). Gestión diferenciada de farmacia.' },
+
+  { e:'🦠', n:'Frasco de antibiótico vencido',
+    c:'peligroso', d:2, roles:['far'],
+    h:'Antimicrobiano vencido → Bolsa ROJA (Res. 591/2024). Riesgo de resistencia bacteriana si se descarta mal.' },
+
+  { e:'☣️', n:'Medicamento citotóxico / oncológico vencido',
+    c:'peligroso', d:3, roles:['far'],
+    h:'Alta peligrosidad química → Bolsa ROJA con rotulado especial (Res. 591/2024). Gestor externo autorizado obligatorio.' },
+
+  { e:'🧊', n:'Frasco de insulina vencida',
+    c:'peligroso', d:2, roles:['far'],
+    h:'Biológico vencido con riesgo cortopunzante asociado → Bolsa ROJA (Res. 591/2024).' },
+
+  { e:'🍶', n:'Alcohol antiséptico vencido',
+    c:'peligroso', d:2, roles:['far','enf'],
+    h:'Sustancia química con riesgo de inflamabilidad → Bolsa ROJA (Res. 591/2024). No se vierte al alcantarillado.' },
+
+  // Médico — procedimientos clínicos y diagnóstico
+  { e:'🔪', n:'Bisturí desechable usado',
+    c:'peligroso', d:1, roles:['med'],
+    h:'Cortopunzante → Guardián ROJO (Res. 591/2024). Nunca en bolsa común. Recipiente rígido resistente a punción.' },
+
+  { e:'🧫', n:'Muestra biológica de laboratorio',
+    c:'peligroso', d:2, roles:['med'],
+    h:'Cultivos y muestras → Alto riesgo biológico (Res. 591/2024). Bolsa ROJA + tratamiento previo (autoclave o incineración).' },
+
+  { e:'🔬', n:'Reactivo de laboratorio agotado',
+    c:'peligroso', d:2, roles:['med'],
+    h:'Reactivo químico → Peligroso (Res. 591/2024). Características de toxicidad. Gestor externo autorizado.' },
+
+  { e:'🧴', n:'Frasco de formaldehído / formalina',
+    c:'peligroso', d:2, roles:['med'],
+    h:'Producto químico cancerígeno → Bolsa ROJA / recipiente especial (Res. 591/2024). Prohibido en bolsa ordinaria.' },
+
+  { e:'🩻', n:'Película radiográfica de Rayos X',
+    c:'peligroso', d:2, roles:['med'],
+    h:'Contiene compuestos de plata → Peligroso especial (Res. 591/2024 + Dec.351/2014). Gestor autorizado externo.' },
+
+  { e:'🪡', n:'Sutura quirúrgica usada',
+    c:'peligroso', d:2, roles:['med'],
+    h:'Material cortopunzante con contacto biológico → Guardián ROJO (Res. 591/2024).' },
+
+  { e:'🔍', n:'Lámina de microscopio con muestra usada',
+    c:'peligroso', d:3, roles:['med'],
+    h:'Vidrio cortopunzante con riesgo biológico → Guardián ROJO (Res. 591/2024). Doble riesgo: corte + infección.' },
+
+  { e:'🧷', n:'Hisopo de toma de muestra usado',
+    c:'peligroso', d:2, roles:['med','enf'],
+    h:'Contacto directo con mucosas/fluidos → Bolsa ROJA (Res. 591/2024). Residuo biosanitario.' },
+
+  { e:'⚡', n:'Electrodo de ECG usado con contacto biológico',
+    c:'peligroso', d:3, roles:['med','enf'],
+    h:'Dispositivo de un solo uso con contacto en piel/fluidos → Bolsa ROJA (Res. 591/2024).' },
+
+  // ── RESIDUOS ADICIONALES — ampliación para nivel Evaluación Final ──
+  // Aprovechables adicionales
+  { e:'🗂️', n:'Archivador metálico en desuso (sin contaminación)',
+    c:'aprovechable', d:2, roles:['enf','far','med'],
+    h:'Metal limpio sin contacto biológico → Bolsa BLANCA (Res. 2184/2019). Aprovechable: hierro, aluminio reciclables.' },
+
+  { e:'📎', n:'Clips y grapas de papelería (limpos)',
+    c:'aprovechable', d:2, roles:['enf','far','med'],
+    h:'Metal limpio → Bolsa BLANCA (Res. 2184/2019). Pequeños metales sin contaminación son aprovechables.' },
+
+  { e:'🧴', n:'Envase plástico de jabón de manos vacío y limpio',
+    c:'aprovechable', d:2, roles:['enf','far','med'],
+    h:'Plástico limpio sin residuo biológico → Bolsa BLANCA. Distinto del envase de desinfectante hospitalario.' },
+
+  // No aprovechables adicionales
+  { e:'🪣', n:'Recipiente de icopor de laboratorio (sin muestra)',
+    c:'no-aprovechable', d:2, roles:['med'],
+    h:'Icopor sin contaminación biológica → Bolsa NEGRA (Res. 2184/2019). Si tuvo muestra → evaluar como peligroso.' },
+
+  { e:'🖊️', n:'Marcador de tablero agotado',
+    c:'no-aprovechable', d:1, roles:['enf','far','med'],
+    h:'Plástico mixto sin separación posible → Bolsa NEGRA. Residuo ordinario no aprovechable.' },
+
+  { e:'📌', n:'Tablero de corcho viejo',
+    c:'no-aprovechable', d:3, roles:['enf','far','med'],
+    h:'Material mixto (corcho + madera + metales) sin valor de reciclaje → Bolsa NEGRA.' },
+
+  { e:'🧹', n:'Escoba plástica desgastada (sin residuo biológico)',
+    c:'no-aprovechable', d:2, roles:['enf','far','med'],
+    h:'Plástico compuesto no reciclable → Bolsa NEGRA. Si tuvo contacto con residuos biológicos → evaluar Bolsa ROJA.' },
+
+  // Orgánicos adicionales
+  { e:'🥩', n:'Restos de comida proteica (cocina hospitalaria)',
+    c:'organico', d:2, roles:['enf','far','med'],
+    h:'Restos orgánicos sin contacto clínico → Bolsa VERDE (Res. 2184/2019). Compostable o tratamiento de orgánicos.' },
+
+  { e:'🌽', n:'Restos de mazorca y vegetales crudos',
+    c:'organico', d:1, roles:['enf','far','med'],
+    h:'Material vegetal biodegradable → Bolsa VERDE. Sin sustancias peligrosas ni contacto biológico.' },
+
+  { e:'🍵', n:'Restos de infusiones y hierbas medicinales',
+    c:'organico', d:2, roles:['enf','far','med'],
+    h:'Orgánico vegetal → Bolsa VERDE (Res. 2184/2019). Compostable, no contaminado con fármacos.' },
+
+  // Peligrosos adicionales
+  { e:'🩺', n:'Fonendo o estetoscopio de paciente con enfermedad infecto-contagiosa',
+    c:'peligroso', d:3, roles:['med','enf'],
+    h:'Equipo con riesgo biológico confirmado → Bolsa ROJA (Res. 591/2024). Diferente del estetoscopio roto sin contacto.' },
+
+  { e:'🔭', n:'Endoscopio o sonda digestiva usada',
+    c:'peligroso', d:3, roles:['med'],
+    h:'Dispositivo con contacto directo con mucosas y fluidos → Bolsa ROJA (Res. 591/2024). Doble riesgo biosanitario.' },
+
+  { e:'🧫', n:'Muestra de orina en frasco para análisis',
+    c:'peligroso', d:2, roles:['med','enf'],
+    h:'Fluido corporal → Bolsa ROJA (Res. 591/2024). Residuo biológico de alto riesgo infeccioso.' },
+
+  { e:'💉', n:'Aguja de acupuntura usada',
+    c:'peligroso', d:3, roles:['med'],
+    h:'Cortopunzante con contacto biológico → Guardián ROJO (Res. 591/2024). Aplica la misma norma que agujas hipodérmicas.' },
+
+  { e:'🩻', n:'Placa de yeso ortopédico con fluidos corporales',
+    c:'peligroso', d:3, roles:['med','enf'],
+    h:'Material con contacto directo a heridas/fluidos → Bolsa ROJA (Res. 591/2024). Residuo biosanitario.' },
+];
+
+// ======================================================
+// TIPS POR CATEGORÍA
+// ======================================================
+const TIPS = {
+  'aprovechable':
+    '♻️ BLANCO (Res. 2184/2019): papel, cartón, vidrio, plástico y metales LIMPIOS sin contaminación biológica ni química.',
+  'no-aprovechable':
+    '🗑️ NEGRO (Res. 2184/2019): sin valor de reciclaje, sin riesgo biológico ni químico. Destinados a relleno sanitario.',
+  'organico':
+    '🌱 VERDE (Res. 2184/2019): biodegradables de origen vegetal o animal SIN contacto con fluidos corporales ni sustancias peligrosas.',
+  'peligroso':
+    '⚠️ ROJO (Res. 591/2024): contacto con sangre, fluidos, riesgo biológico-infeccioso, cortopunzantes, químicos tóxicos o fármacos.',
+};
+
+const CAT = {
+  'aprovechable':   '♻️ Aprovechable (Blanca)',
+  'no-aprovechable':'🗑️ No Aprovechable (Negra)',
+  'organico':       '🌱 Orgánico (Verde)',
+  'peligroso':      '⚠️ Peligroso (Roja)',
+};
+
+// ======================================================
+// CONFIGURACIÓN DE NIVELES (según DOCX v2)
+// ======================================================
+const LEVELS = {
+  easy:   { time:60,  count:10, maxD:2, hints:true,  label:'INDUCCIÓN'        },
+  medium: { time:50,  count:15, maxD:3, hints:false,  label:'PRÁCTICA CLÍNICA' },
+  hard:   { time:120, count:40, maxD:3, hints:false,  label:'EVALUACIÓN FINAL' },
+};
+
+// ======================================================
+// ESTADO GLOBAL
+// ======================================================
+const G = {
+  role:'enf', level:'easy', items:[], idx:0,
+  score:0, lives:3, timer:60, iv:null,
+  mistakes:[], correct:0, combo:0, answered:false,
+  // Jugador actual
+  player: { nombre:'', area:'', cargo:'' },
+};
+
+// ======================================================
+// SISTEMA DE RANKING (localStorage)
+// ======================================================
+const RANKING_KEY = 'pgirasa_ranking_v2';
+
+function getRanking() {
+  try { return JSON.parse(localStorage.getItem(RANKING_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function saveToRanking(entry) {
+  const data = getRanking();
+  data.push(entry);
+  // Mantener máximo 200 registros históricos
+  if (data.length > 200) data.splice(0, data.length - 200);
+  localStorage.setItem(RANKING_KEY, JSON.stringify(data));
+}
+
+function getTop10() {
+  const data = getRanking();
+  return [...data].sort((a,b) => b.puntaje - a.puntaje).slice(0, 10);
+}
+
+function getChampion() {
+  const data = getRanking();
+  if (!data.length) return null;
+  return data.reduce((best, cur) => cur.puntaje > best.puntaje ? cur : best, data[0]);
+}
+
+function renderMiniRanking() {
+  const top = getTop10().slice(0, 5);
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+  const tbody = el('mini-ranking-body');
+  if (!top.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:14px">Sin registros aún</td></tr>';
+    return;
+  }
+  tbody.innerHTML = top.map((r,i) => `
+    <tr class="${i===0?'rk-gold':i===1?'rk-silver':i===2?'rk-bronze':''}">
+      <td class="rk-medal">${medals[i]}</td>
+      <td><strong>${r.nombre}</strong></td>
+      <td class="rk-pts">${r.puntaje.toLocaleString()}</td>
+      <td class="rk-acc">${r.precision}%</td>
+    </tr>`).join('');
+}
+
+function renderFullRanking() {
+  const top = getTop10();
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+  const tbody = el('ranking-body');
+  if (!top.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Sin registros aún</td></tr>';
+    return;
+  }
+  tbody.innerHTML = top.map((r,i) => `
+    <tr class="${i===0?'rk-gold':i===1?'rk-silver':i===2?'rk-bronze':''}">
+      <td class="rk-medal">${medals[i]}</td>
+      <td><strong>${r.nombre}</strong></td>
+      <td style="font-size:11px;color:var(--muted)">${ROLES[r.rol]?.icon||''} ${ROLES[r.rol]?.name||r.rol}</td>
+      <td style="font-size:11px;color:var(--muted)">${LEVELS[r.nivel]?.label||r.nivel}</td>
+      <td class="rk-pts">${r.puntaje.toLocaleString()}</td>
+      <td class="rk-acc">${r.precision}%</td>
+    </tr>`).join('');
+}
+
+function renderChampion() {
+  const c = getChampion();
+  if (!c) {
+    el('champ-name').textContent = 'Sin datos aún';
+    el('champ-pts').textContent = '';
+    el('champ-lvl').textContent = '';
+    el('champ-acc').textContent = '';
+    el('champ-date').textContent = '';
+    return;
+  }
+  el('champ-name').textContent = c.nombre;
+  el('champ-pts').textContent  = `Puntaje: ${c.puntaje.toLocaleString()}`;
+  el('champ-lvl').textContent  = `Nivel: ${LEVELS[c.nivel]?.label||c.nivel}`;
+  el('champ-acc').textContent  = `Precisión: ${c.precision}%`;
+  el('champ-date').textContent = `📅 ${c.fecha}`;
+}
+
+function mostrarRanking() {
+  renderChampion();
+  renderFullRanking();
+  el('historial-box').style.display = 'none';
+  showScreen('ranking-screen');
+}
+
+function verHistorial() {
+  const data = [...getRanking()].reverse(); // más reciente primero
+  const tbody = el('historial-body');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:14px">Sin registros</td></tr>';
+  } else {
+    tbody.innerHTML = data.slice(0, 100).map((r,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><strong>${r.nombre}</strong></td>
+        <td style="font-size:11px;color:var(--muted)">${r.area||'—'}</td>
+        <td style="font-size:11px">${ROLES[r.rol]?.icon||''} ${ROLES[r.rol]?.name||r.rol}</td>
+        <td style="font-size:11px;color:var(--muted)">${LEVELS[r.nivel]?.label||r.nivel}</td>
+        <td class="rk-pts">${r.puntaje.toLocaleString()}</td>
+        <td class="rk-acc">${r.precision}%</td>
+        <td style="font-size:10px;color:var(--muted)">${r.fecha}</td>
+      </tr>`).join('');
+  }
+  el('historial-box').style.display = 'block';
+  el('historial-box').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function reiniciarRanking() {
+  if (confirm('⚠️ ¿Seguro que deseas eliminar TODOS los registros del ranking? Esta acción no se puede deshacer.')) {
+    localStorage.removeItem(RANKING_KEY);
+    renderChampion();
+    renderFullRanking();
+    el('historial-box').style.display = 'none';
+    alert('✅ Ranking reiniciado correctamente.');
+  }
+}
+
+// ======================================================
+// UTILIDADES
+// ======================================================
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i=a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function el(id){ return document.getElementById(id); }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  el(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ======================================================
+// PRUEBA DIAGNÓSTICA
+// ======================================================
+const PE = {
+  items: [],       // 10 ítems seleccionados aleatoriamente
+  idx: 0,
+  correctas: 0,
+  erroresPorCategoria: {},  // para mostrar áreas débiles
+  answered: false,
+  nivelRecomendado: 'easy', // nivel a donde irá el participante
+};
+
+// Selección equilibrada: 2-3 por categoría para los 10 ítems
+function prepararEvaluacionPrevia() {
+  const cats = ['aprovechable','no-aprovechable','organico','peligroso'];
+  let pool = [];
+  cats.forEach(c => {
+    const sub = shuffle(ITEMS.filter(i => i.c === c));
+    pool = pool.concat(sub.slice(0, 3)); // hasta 3 por categoría
+  });
+  PE.items = shuffle(pool).slice(0, 10);
+  PE.idx = 0;
+  PE.correctas = 0;
+  PE.erroresPorCategoria = {};
+  PE.answered = false;
+  cats.forEach(c => { PE.erroresPorCategoria[c] = 0; });
+}
+
+function mostrarItemPreeval() {
+  if (PE.idx >= PE.items.length) {
+    finalizarEvaluacionPrevia();
+    return;
+  }
+  const item = PE.items[PE.idx];
+  PE.answered = false;
+
+  el('pe-emo').textContent  = item.e;
+  el('pe-name').textContent = item.n;
+  el('pe-prg').textContent  = `${PE.idx + 1}/10`;
+  el('pe-ok').textContent   = PE.correctas;
+  el('pe-bar').style.width  = (PE.idx / 10 * 100) + '%';
+
+  // Habilitar botones
+  document.querySelectorAll('.pe-bin').forEach(b => { b.disabled = false; });
+
+  // Feedback visual reset
+  el('pe-card').style.borderColor = '#1e4080';
+}
+
+function responderPreeval(elegido) {
+  if (PE.answered) return;
+  PE.answered = true;
+
+  const item = PE.items[PE.idx];
+  const ok   = elegido === item.c;
+
+  // ❌ No se muestra la respuesta correcta (según spec)
+  // Solo feedback visual de color en la card
+  el('pe-card').style.borderColor = ok ? '#22c55e' : '#ef4444';
+  document.querySelectorAll('.pe-bin').forEach(b => { b.disabled = true; });
+
+  if (ok) {
+    PE.correctas++;
+    SFX.correct();
+  } else {
+    PE.erroresPorCategoria[item.c]++;
+    SFX.wrong();
+  }
+
+  PE.idx++;
+  setTimeout(mostrarItemPreeval, 700);
+}
+
+function finalizarEvaluacionPrevia() {
+  const n = PE.correctas; // sobre 10
+
+  // Determinar nivel recomendado
+  let nivelIco, nivelTxt, nivelColor, titulo, mensaje, level;
+
+  if (n === 10) {
+    nivelIco   = '🏆';
+    nivelTxt   = 'Evaluación Final';
+    nivelColor = 'linear-gradient(135deg,#92400e,#d97706)';
+    titulo     = `¡Conocimiento perfecto, ${G.player.nombre}!`;
+    mensaje    = `Obtuviste <strong>10/10</strong> respuestas correctas. Demuestras un dominio completo de la clasificación y disposición de residuos. Serás enviado directamente a la <strong>Evaluación Final</strong>, el nivel más exigente de la experiencia.`;
+    level      = 'hard';
+  } else if (n >= 8) {
+    nivelIco   = '🟢';
+    nivelTxt   = 'Nivel Avanzado — Evaluación Final';
+    nivelColor = 'linear-gradient(135deg,#052e16,#16a34a)';
+    titulo     = `¡Excelente nivel de conocimiento, ${G.player.nombre}!`;
+    mensaje    = `Obtuviste <strong>${n}/10</strong> respuestas correctas. Reconoces correctamente la mayoría de los residuos y su disposición. Te recomendamos iniciar en la <strong>Evaluación Final</strong> donde podrás demostrar tus competencias integrales.`;
+    level      = 'hard';
+  } else if (n >= 5) {
+    nivelIco   = '🟡';
+    nivelTxt   = 'Nivel de Práctica Clínica';
+    nivelColor = 'linear-gradient(135deg,#451a03,#d97706)';
+    titulo     = `¡Buena base de conocimiento, ${G.player.nombre}!`;
+    mensaje    = `Obtuviste <strong>${n}/10</strong> respuestas correctas. Tienes conocimientos previos sobre residuos hospitalarios. Te recomendamos iniciar en <strong>Práctica Clínica</strong>, donde podrás fortalecer y aplicar tus conocimientos en situaciones más exigentes.`;
+    level      = 'medium';
+  } else {
+    nivelIco   = '🔴';
+    nivelTxt   = 'Nivel de Inducción';
+    nivelColor = 'linear-gradient(135deg,#1f0505,#dc2626)';
+    titulo     = `¡Es momento de aprender, ${G.player.nombre}!`;
+    mensaje    = `Obtuviste <strong>${n}/10</strong> respuestas correctas. Aún hay conceptos fundamentales que necesitas reforzar. Te recomendamos comenzar desde el nivel de <strong>Inducción</strong>, donde aprenderás los fundamentos de la clasificación de residuos paso a paso con ayudas y pistas.`;
+    level      = 'easy';
+  }
+
+  PE.nivelRecomendado = level;
+
+  // Identificar categorías con más errores para mostrar áreas débiles
+  const areasLabels = {
+    'aprovechable':    '♻️ Residuos Aprovechables (Bolsa Blanca)',
+    'no-aprovechable': '🗑️ Residuos No Aprovechables (Bolsa Negra)',
+    'organico':        '🌱 Residuos Orgánicos (Bolsa Verde)',
+    'peligroso':       '⚠️ Residuos Peligrosos (Bolsa Roja)',
+  };
+  const areasDebiles = Object.entries(PE.erroresPorCategoria)
+    .filter(([, errs]) => errs > 0)
+    .sort((a, b) => b[1] - a[1]);
+
+  // Renderizar resultado
+  el('pre-icon').textContent      = nivelIco;
+  el('pre-title').textContent     = titulo;
+  el('pre-score').textContent     = `${n}/10`;
+  el('pre-nivel-ico').textContent = nivelIco;
+  el('pre-nivel-txt').textContent = nivelTxt;
+  el('pre-nivel-badge').style.background = nivelColor;
+  el('pre-mensaje').innerHTML     = mensaje;
+
+  if (areasDebiles.length > 0) {
+    el('pre-areas').style.display = 'block';
+    el('pre-areas-list').innerHTML = areasDebiles.map(([cat]) =>
+      `<span class="prerres-area-tag">${areasLabels[cat]}</span>`
+    ).join('');
+  } else {
+    el('pre-areas').style.display = 'none';
+  }
+
+  // Actualizar texto del botón según nivel
+  el('pre-btn-nivel').textContent = level === 'hard'
+    ? '🏆 Ir a Evaluación Final'
+    : level === 'medium'
+      ? '⚕️ Ir a Práctica Clínica'
+      : '🌱 Ir a Inducción';
+
+  SFX.victory(n >= 8 ? 3 : n >= 5 ? 2 : 1);
+  showScreen('preeval-result-screen');
+}
+
+function irANivelRecomendado() {
+  // Ir directo a la selección de rol con el nivel ya determinado,
+  // o si no hay rol seleccionado, mostrar menú para que elija rol
+  SFX.selectLevel();
+  showScreen('menu-screen');
+  // Guardar el nivel recomendado en G para que sea pre-seleccionado
+  G.level = PE.nivelRecomendado;
+}
+
+function iniciarEvaluacionPrevia() {
+  const nombre = el('reg-nombre').value.trim();
+  const area   = el('reg-area').value.trim();
+  const cargo  = el('reg-cargo').value.trim();
+  if (!nombre) {
+    el('reg-error').style.display = 'block';
+    el('reg-nombre').focus();
+    return;
+  }
+  el('reg-error').style.display = 'none';
+  G.player.nombre = nombre;
+  G.player.area   = area;
+  G.player.cargo  = cargo;
+  SFX.init();
+  SFX.selectLevel();
+  prepararEvaluacionPrevia();
+  showScreen('preeval-screen');
+  mostrarItemPreeval();
+}
+
+// ======================================================
+// REGISTRO DE PARTICIPANTE
+// ======================================================
+function registrarParticipante() {
+  const nombre = el('reg-nombre').value.trim();
+  const area   = el('reg-area').value.trim();
+  const cargo  = el('reg-cargo').value.trim();
+  if (!nombre) {
+    el('reg-error').style.display = 'block';
+    el('reg-nombre').focus();
+    return;
+  }
+  el('reg-error').style.display = 'none';
+  G.player.nombre = nombre;
+  G.player.area   = area;
+  G.player.cargo  = cargo;
+  SFX.init();
+  SFX.selectLevel();
+  showScreen('menu-screen');
+}
+
+// ======================================================
+// SELECCIÓN DE ROL
+// ======================================================
+function selectRole(roleKey) {
+  SFX.init();
+  SFX.selectLevel();
+  G.role = roleKey;
+  const r = ROLES[roleKey];
+
+  el('rb-ico').textContent  = r.icon;
+  el('rb-name').textContent = r.name;
+  el('rb-tag').textContent  = r.tag;
+  el('rb-resp').innerHTML   = r.resp;
+  el('role-banner').style.background = `linear-gradient(150deg, ${r.color}33, ${r.color}66)`;
+  el('role-banner').style.border = `1px solid ${r.color}`;
+
+  showScreen('role-screen');
+}
+
+// ======================================================
+// INICIO DEL JUEGO
+// ======================================================
+function startGame(level) {
+  SFX.init();
+  G.level = level;
+  const r   = ROLES[G.role];
+  const cfg = LEVELS[level];
+  // Nivel EVALUACIÓN FINAL: usar TODOS los ítems disponibles (todos los roles)
+  let pool;
+  if (level === 'hard') {
+    pool = shuffle(ITEMS); // todos los residuos, todos los roles
+  } else {
+    const basePool = (G.role === 'gen') ? ITEMS : ITEMS.filter(i => i.roles.includes(G.role));
+    pool = shuffle(basePool.filter(i => i.d <= cfg.maxD));
+  }
+  G.items = pool.slice(0, cfg.count);
+  G.idx     = 0; G.score = 0; G.lives = 3;
+  G.timer   = cfg.time; G.mistakes = [];
+  G.correct = 0; G.combo = 0; G.answered = false;
+
+  // Insignia de rol en pantalla de juego
+  el('grb-ico').textContent  = r.icon;
+  el('grb-name').textContent = r.name;
+  el('game-role-badge').style.background = r.color;
+  el('exit-role-name').textContent = r.name;
+
+  // 🔊 Sonido de suspenso de entrada según nivel
+  SFX.selectLevel();
+  setTimeout(() => {
+    if (level === 'easy')   SFX.levelIntroEasy();
+    if (level === 'medium') SFX.levelIntroMedium();
+    if (level === 'hard')   SFX.levelIntroHard();
+    setTimeout(() => SFX.startBgMusic(level), 1800);
+  }, 200);
+
+  showScreen('game-screen');
+  updateHUD(); showItem(); startTimer();
+}
+
+// ======================================================
+// TEMPORIZADOR
+// ======================================================
+function startTimer() {
+  clearInterval(G.iv);
+  G.iv = setInterval(() => {
+    G.timer--;
+    const te = el('s-tim');
+    te.textContent = G.timer;
+    te.className = 'stat-val ' + (G.timer <= 10 ? 'sv-warn' : 'sv-time');
+    // 🔊 Ticks de urgencia
+    if (G.timer <= 5)  SFX.timerUrgent();
+    else if (G.timer <= 10) SFX.timerTick();
+    if (G.timer <= 0) { clearInterval(G.iv); endGame('timeout'); }
+  }, 1000);
+}
+
+// ======================================================
+// MOSTRAR ÍTEM
+// ======================================================
+function showItem() {
+  if (G.idx >= G.items.length) { clearInterval(G.iv); endGame('completed'); return; }
+  G.answered = false;
+  const item = G.items[G.idx];
+  const cfg  = LEVELS[G.level];
+
+  el('item-emo').textContent  = item.e;
+  el('item-name').textContent = item.n;
+  el('item-hint').textContent = cfg.hints ? item.h : '';
+
+  el('item-zone').className = 'item-zone';
+  el('feedback-ol').className = 'feedback-ol';
+  el('fb-main').textContent = '';
+  el('fb-sub').textContent  = '';
+
+  const tb = el('tip-box');
+  if (cfg.hints) { tb.style.display='flex'; el('tip-txt').textContent = TIPS[item.c]; }
+  else           { tb.style.display='none'; }
+
+  // 🔊 Sonido de nuevo ítem
+  if (G.idx > 0) SFX.newItem();
+
+  setBins(true);
+  updateProg();
+}
+
+// ======================================================
+// CLASIFICAR
+// ======================================================
+function classify(chosen) {
+  if (G.answered) return;
+  G.answered = true;
+  setBins(false);
+
+  const item = G.items[G.idx];
+  const ok   = chosen === item.c;
+
+  if (ok) {
+    const bonus = G.combo >= 2 ? 200 : 100;
+    G.score += bonus; G.correct++; G.combo++;
+    el('item-zone').className = 'item-zone correct';
+    el('fb-main').textContent = G.combo>=3 ? '🔥 ¡COMBO!' : '✅ ¡CORRECTO!';
+    el('fb-sub').textContent  = G.combo>=3 ? `+${bonus} pts (×2 combo)` : '+100 pts';
+    el('feedback-ol').className = 'feedback-ol correct show';
+    // 🔊 Sonido de respuesta correcta
+    if (G.combo >= 3) {
+      SFX.comboSound(G.combo);
+      showCombo(G.combo);
+    } else {
+      SFX.correct();
+    }
+  } else {
+    G.lives--; G.combo = 0;
+    G.mistakes.push({ item, chosen });
+    el('item-zone').className = 'item-zone wrong';
+    el('fb-main').textContent = '❌ INCORRECTO';
+    el('fb-sub').textContent  = 'Era: ' + CAT[item.c];
+    el('feedback-ol').className = 'feedback-ol wrong show';
+    // 🔊 Sonido de error / pérdida de vida
+    if (G.lives <= 1) SFX.lastLife();
+    else              SFX.wrong();
+    updateHUD();
+    if (G.lives <= 0) {
+      setTimeout(() => { clearInterval(G.iv); endGame('noLives'); }, 1300);
+      return;
+    }
+  }
+
+  updateHUD();
+  G.idx++;
+  setTimeout(showItem, 1250);
+}
+
+// ======================================================
+// COMBO
+// ======================================================
+function showCombo(n) {
+  const b = el('combo-badge');
+  b.textContent = `🔥 ¡COMBO x${n}! +200 pts`;
+  b.classList.add('show');
+  setTimeout(() => b.classList.remove('show'), 1500);
+}
+
+// ======================================================
+// HUD
+// ======================================================
+function updateHUD() {
+  el('s-pts').textContent = G.score;
+  el('s-lif').textContent = '❤️'.repeat(Math.max(0,G.lives)) + '🖤'.repeat(Math.max(0,3-G.lives));
+}
+function updateProg() {
+  const pct = (G.idx / G.items.length) * 100;
+  el('prog-fill').style.width = pct + '%';
+  el('s-prg').textContent = `${G.idx}/${G.items.length}`;
+}
+function setBins(on) {
+  ['aprovechable','no-aprovechable','organico','peligroso'].forEach(c => {
+    el('b-'+c).disabled = !on;
+  });
+}
+
+// ======================================================
+// FIN DEL JUEGO
+// ======================================================
+function endGame(reason) {
+  SFX.stopBgMusic();
+  showScreen('result-screen');
+  const total = G.correct + G.mistakes.length;
+  const acc   = total > 0 ? Math.round(G.correct / total * 100) : 0;
+  const r = ROLES[G.role];
+
+  el('rrb-ico').textContent  = r.icon;
+  el('rrb-name').textContent = r.name;
+  el('res-role-badge').style.background = r.color;
+  el('norm-reminder').innerHTML =
+    `<strong>Recuerda como ${r.name}:</strong> ${r.resp} La <strong>Resolución 2184 de 2019</strong> fija los colores blanco, negro y verde para residuos no peligrosos, y la <strong>Resolución 591 de 2024</strong> exige bolsa <strong>roja</strong> para los residuos peligrosos dentro del PGIRASA institucional.`;
+
+  el('r-score').textContent = G.score + ' pts';
+  el('r-ok').textContent  = G.correct;
+  el('r-err').textContent = G.mistakes.length;
+  el('r-acc').textContent = acc + '%';
+
+  // ── Guardar en ranking ──
+  const ahora = new Date();
+  const fechaStr = ahora.toLocaleDateString('es-CO', {day:'2-digit',month:'2-digit',year:'numeric'})
+    + ' ' + ahora.toLocaleTimeString('es-CO', {hour:'2-digit',minute:'2-digit'});
+  const entry = {
+    nombre:    G.player.nombre || 'Participante',
+    area:      G.player.area   || '',
+    cargo:     G.player.cargo  || '',
+    rol:       G.role,
+    nivel:     G.level,
+    puntaje:   G.score,
+    precision: acc,
+    correctas: G.correct,
+    errores:   G.mistakes.length,
+    fecha:     fechaStr,
+  };
+  saveToRanking(entry);
+  renderMiniRanking();
+
+  let icon, title, stars, starCount = 0;
+  if      (acc >= 90){ icon='🏆'; title='¡Experto en gestión de residuos!'; stars='⭐⭐⭐'; starCount=3; }
+  else if (acc >= 70){ icon='🎓'; title='¡Buen desempeño profesional!';     stars='⭐⭐';   starCount=2; }
+  else if (acc >= 50){ icon='📚'; title='Sigue practicando la normativa';    stars='⭐';     starCount=1; }
+  else               { icon='🔄'; title='Repasar Res. 591/2024 y 2184/2019'; stars='';       starCount=0; }
+
+  if (reason === 'timeout') { icon='⏰'; title='¡Se acabó el tiempo!'; }
+  if (reason === 'noLives') { icon='💔'; title='¡Sin vidas! Inténtalo de nuevo'; }
+
+  el('r-icon').textContent  = icon;
+  el('r-title').textContent = title;
+  el('r-stars').textContent = stars;
+
+  // 🔊 Sonido de resultado
+  setTimeout(() => {
+    if (reason === 'timeout')   SFX.timeout();
+    else if (reason === 'noLives') SFX.gameOver();
+    else SFX.victory(starCount);
+  }, 300);
+
+  if (G.mistakes.length > 0) {
+    el('mis-box').style.display = 'block';
+    el('mis-list').innerHTML = G.mistakes.slice(0, 8).map(m =>
+      `<div class="mistake-row">
+        <span class="mr-emo">${m.item.e}</span>
+        <div>
+          <div class="mr-name">${m.item.n}</div>
+          <div>Correcto: <span class="ok">${CAT[m.item.c]}</span> · Pusiste: <span class="bad">${CAT[m.chosen]}</span></div>
+          <div class="mr-tip">${m.item.h}</div>
+        </div>
+      </div>`
+    ).join('');
+  } else {
+    el('mis-box').style.display = 'none';
+  }
+}
+
+function restartLevel() { SFX.selectLevel(); startGame(G.level); }
+
+// ======================================================
+// ██████╗  MOTOR DE AUDIO PROFESIONAL ██████╗
+// Web Audio API – sintetizado, sin archivos externos
+// ======================================================
+const SFX = (() => {
+  let ctx = null;
+  let muted = false;
+  let masterGain = null;
+  let bgNode = null;
+  let bgGain = null;
+  let initialized = false;
+
+  function init() {
+    if (initialized) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0.85;
+    masterGain.connect(ctx.destination);
+    initialized = true;
+  }
+
+  function resume() {
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+  }
+
+  function osc(freq, type, startTime, dur, gainVal, attack, release) {
+    if (muted || !initialized) return;
+    resume();
+    const g = ctx.createGain();
+    g.connect(masterGain);
+    const o = ctx.createOscillator();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, startTime);
+    g.gain.setValueAtTime(0, startTime);
+    g.gain.linearRampToValueAtTime(gainVal, startTime + (attack || 0.01));
+    g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur - (release || 0.02));
+    o.connect(g);
+    o.start(startTime);
+    o.stop(startTime + dur);
+  }
+
+  function noise(dur, gainVal, startTime, filterFreq) {
+    if (muted || !initialized) return;
+    resume();
+    const bufSize = ctx.sampleRate * dur;
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = filterFreq || 1000;
+    filter.Q.value = 0.5;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(gainVal, startTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+    src.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+    src.start(startTime);
+    src.stop(startTime + dur);
+  }
+
+  function chord(freqs, type, startTime, dur, gainVal) {
+    freqs.forEach((f, i) => osc(f, type, startTime + i * 0.03, dur, gainVal / freqs.length, 0.04, 0.1));
+  }
+
+  // ── SONIDOS DE NIVEL ──────────────────────────────────────
+
+  // Suspenso de entrada al juego (nivel fácil): melodía misteriosa
+  function levelIntroEasy() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    // Bajo pulsante
+    [0, 0.4, 0.8, 1.2, 1.6].forEach(dt =>
+      osc(55, 'sine', t + dt, 0.35, 0.35, 0.01, 0.1)
+    );
+    // Melodía de suspenso suave
+    const melody = [261, 293, 261, 246, 220, 246, 261];
+    melody.forEach((f, i) => osc(f, 'triangle', t + 0.1 + i * 0.25, 0.22, 0.18, 0.02, 0.08));
+    // Acorde ambiental
+    chord([130, 164, 195], 'sine', t + 0.5, 1.5, 0.2);
+  }
+
+  // Suspenso de entrada nivel medio: más tenso
+  function levelIntroMedium() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    // Pulso de bombo grave
+    [0, 0.5, 1.0].forEach(dt => {
+      osc(80, 'sine', t + dt, 0.3, 0.5, 0.005, 0.12);
+      osc(40, 'sine', t + dt, 0.2, 0.6, 0.005, 0.15);
+    });
+    // Cuerda tensa
+    const tense = [196, 220, 196, 174, 196];
+    tense.forEach((f, i) => osc(f, 'sawtooth', t + 0.2 + i * 0.3, 0.25, 0.12, 0.03, 0.1));
+    // Zumbido de tensión
+    osc(110, 'sawtooth', t + 0.8, 1.2, 0.08, 0.2, 0.4);
+    noise(0.15, 0.12, t + 1.0, 400);
+  }
+
+  // Suspenso de entrada nivel difícil: alarma intensa
+  function levelIntroHard() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    // Bombo industrial
+    [0, 0.33, 0.66, 1.0, 1.33].forEach(dt => {
+      osc(60, 'sine', t + dt, 0.28, 0.7, 0.003, 0.1);
+      osc(30, 'sine', t + dt, 0.2, 0.8, 0.003, 0.12);
+      noise(0.08, 0.2, t + dt, 200);
+    });
+    // Alarma estroboscópica
+    [0, 0.16, 0.33, 0.5, 0.66, 0.83].forEach(dt =>
+      osc(880 + dt * 200, 'square', t + 0.1 + dt, 0.12, 0.1, 0.005, 0.04)
+    );
+    // Tensión sostenida
+    osc(146, 'sawtooth', t + 0.5, 1.5, 0.15, 0.1, 0.5);
+    osc(155, 'sawtooth', t + 0.5, 1.5, 0.1, 0.1, 0.5);
+  }
+
+  // ── RESPUESTA CORRECTA ────────────────────────────────────
+  function correct() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.02;
+    // Fanfarria positiva ascendente
+    const notes = [523, 659, 784, 1046];
+    notes.forEach((f, i) => osc(f, 'triangle', t + i * 0.09, 0.18, 0.35, 0.01, 0.06));
+    // Shimmer de premio
+    [1046, 1318, 1568].forEach((f, i) =>
+      osc(f, 'sine', t + 0.2 + i * 0.06, 0.15, 0.2, 0.01, 0.08)
+    );
+    // Click de confirmación
+    noise(0.04, 0.3, t, 3000);
+  }
+
+  // ── COMBO ─────────────────────────────────────────────────
+  function comboSound(n) {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.02;
+    const multiplier = Math.min(n, 8);
+    // Arpeggio épico que escala con el combo
+    const baseFreqs = [261, 329, 392, 523, 659, 784, 1046, 1318];
+    const freqs = baseFreqs.slice(0, Math.min(multiplier, 6));
+    freqs.forEach((f, i) => osc(f, 'triangle', t + i * 0.07, 0.22, 0.4, 0.01, 0.08));
+    // Acorde de triunfo
+    chord([523, 659, 784, 1046], 'sine', t + freqs.length * 0.07, 0.5, 0.5);
+    // Shimmer final
+    [2093, 2637].forEach((f, i) => osc(f, 'sine', t + 0.4 + i * 0.05, 0.2, 0.25, 0.01, 0.12));
+    // Ruido de fanfarria
+    noise(0.08, 0.25, t + 0.35, 5000);
+  }
+
+  // ── RESPUESTA INCORRECTA ──────────────────────────────────
+  function wrong() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.02;
+    // Golpe grave de error
+    osc(150, 'sawtooth', t, 0.12, 0.5, 0.005, 0.05);
+    osc(110, 'sawtooth', t + 0.04, 0.25, 0.55, 0.005, 0.1);
+    osc(80, 'square', t + 0.1, 0.3, 0.45, 0.005, 0.15);
+    // Descenso dramático
+    const g = ctx.createGain();
+    g.connect(masterGain);
+    const o = ctx.createOscillator();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(300, t + 0.15);
+    o.frequency.exponentialRampToValueAtTime(60, t + 0.6);
+    g.gain.setValueAtTime(0.3, t + 0.15);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
+    o.connect(g);
+    o.start(t + 0.15);
+    o.stop(t + 0.7);
+    noise(0.1, 0.3, t, 300);
+  }
+
+  // ── PÉRDIDA DE VIDA ───────────────────────────────────────
+  function loseLife() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.02;
+    // Corazón rompiéndose: golpe + descenso profundo
+    osc(200, 'sawtooth', t, 0.08, 0.6, 0.005, 0.03);
+    osc(140, 'square', t + 0.06, 0.2, 0.65, 0.005, 0.08);
+    const g = ctx.createGain(); g.connect(masterGain);
+    const o = ctx.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(220, t + 0.1);
+    o.frequency.exponentialRampToValueAtTime(40, t + 1.0);
+    g.gain.setValueAtTime(0.4, t + 0.1);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+    o.connect(g); o.start(t + 0.1); o.stop(t + 1.2);
+    // Vibrato de angustia
+    [0, 0.15, 0.3].forEach(dt => noise(0.07, 0.2, t + dt, 250));
+  }
+
+  // ── ÚLTIMA VIDA (peligro crítico) ─────────────────────────
+  function lastLife() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.02;
+    // Pulsos de alarma roja
+    [0, 0.18, 0.36, 0.54, 0.72].forEach(dt => {
+      osc(880, 'square', t + dt, 0.1, 0.15, 0.005, 0.04);
+      osc(440, 'sawtooth', t + dt + 0.05, 0.08, 0.2, 0.005, 0.04);
+    });
+    loseLife();
+  }
+
+  // ── TEMPORIZADOR BAJO ─────────────────────────────────────
+  function timerTick() {
+    if (!initialized) return;
+    const t = ctx.currentTime;
+    osc(880, 'square', t, 0.06, 0.15, 0.003, 0.02);
+  }
+
+  function timerUrgent() {
+    if (!initialized) return;
+    const t = ctx.currentTime;
+    osc(1100, 'square', t, 0.05, 0.2, 0.002, 0.02);
+    osc(880, 'square', t + 0.03, 0.04, 0.15, 0.002, 0.02);
+  }
+
+  // ── TIEMPO AGOTADO ────────────────────────────────────────
+  function timeout() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    // Alarma descendente grave
+    [0, 0.22, 0.44, 0.66, 0.88, 1.1].forEach((dt, i) => {
+      const freq = 660 - i * 60;
+      osc(freq, 'sawtooth', t + dt, 0.2, 0.4, 0.01, 0.06);
+      noise(0.05, 0.15, t + dt, 300);
+    });
+    // Silencio profundo final
+    osc(55, 'sine', t + 1.3, 0.8, 0.35, 0.05, 0.4);
+  }
+
+  // ── SIN VIDAS (game over) ─────────────────────────────────
+  function gameOver() {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    // Marcha fúnebre electrónica
+    const funeral = [196, 185, 174, 155, 146, 130];
+    funeral.forEach((f, i) => {
+      osc(f, 'sawtooth', t + i * 0.22, 0.2, 0.4, 0.02, 0.08);
+      osc(f / 2, 'sine', t + i * 0.22, 0.22, 0.35, 0.02, 0.1);
+    });
+    noise(0.6, 0.15, t + 0.5, 200);
+    // Reverberación grave final
+    osc(65, 'sine', t + 1.4, 1.2, 0.4, 0.1, 0.6);
+    osc(55, 'sine', t + 1.6, 1.0, 0.35, 0.1, 0.6);
+  }
+
+  // ── VICTORIA / COMPLETADO ─────────────────────────────────
+  function victory(stars) {
+    if (!initialized) return;
+    const t = ctx.currentTime + 0.05;
+    if (stars >= 3) {
+      // 3 estrellas: fanfarria épica de campeón
+      const arp = [523, 659, 784, 1046, 1318, 1568, 2093];
+      arp.forEach((f, i) => osc(f, 'triangle', t + i * 0.08, 0.3, 0.45, 0.01, 0.1));
+      chord([523, 659, 784, 1046], 'triangle', t + 0.6, 1.5, 0.6);
+      chord([1046, 1318, 1568, 2093], 'sine', t + 0.8, 1.2, 0.5);
+      noise(0.15, 0.4, t + 0.55, 6000);
+      [1.0, 1.1, 1.2].forEach(dt => noise(0.08, 0.3, t + dt, 8000));
+      // Shimmer final glorioso
+      [2093, 2637, 3136].forEach((f, i) => osc(f, 'sine', t + 1.2 + i * 0.08, 0.5, 0.3, 0.02, 0.2));
+    } else if (stars >= 2) {
+      // 2 estrellas: melodía de buen trabajo
+      const med = [523, 587, 659, 784, 880];
+      med.forEach((f, i) => osc(f, 'triangle', t + i * 0.1, 0.25, 0.38, 0.01, 0.08));
+      chord([523, 659, 784], 'sine', t + 0.55, 1.0, 0.5);
+      noise(0.1, 0.25, t + 0.5, 4000);
+    } else {
+      // 1 estrella o menos: resultado neutro positivo mínimo
+      const min2 = [523, 587, 523];
+      min2.forEach((f, i) => osc(f, 'triangle', t + i * 0.12, 0.22, 0.28, 0.01, 0.08));
+    }
+  }
+
+  // ── NUEVO ÍTEM (aparición) ────────────────────────────────
+  function newItem() {
+    if (!initialized) return;
+    const t = ctx.currentTime;
+    osc(880, 'sine', t, 0.05, 0.12, 0.005, 0.04);
+  }
+
+  // ── SELECCIÓN DE NIVEL ────────────────────────────────────
+  function selectLevel() {
+    if (!initialized) return;
+    const t = ctx.currentTime;
+    osc(523, 'sine', t, 0.08, 0.25, 0.005, 0.06);
+    osc(659, 'sine', t + 0.06, 0.08, 0.2, 0.005, 0.06);
+  }
+
+  // ── MÚSICA AMBIENT DE FONDO ───────────────────────────────
+  function startBgMusic(level) {
+    stopBgMusic();
+    if (!initialized || muted) return;
+    bgGain = ctx.createGain();
+    bgGain.gain.value = 0;
+    bgGain.connect(masterGain);
+
+    const configs = {
+      easy:   { freq: 110, type: 'sine',     targetGain: 0.06 },
+      medium: { freq: 82,  type: 'triangle', targetGain: 0.08 },
+      hard:   { freq: 55,  type: 'sawtooth', targetGain: 0.05 },
+    };
+    const cfg2 = configs[level] || configs.easy;
+
+    bgNode = ctx.createOscillator();
+    bgNode.type = cfg2.type;
+    bgNode.frequency.setValueAtTime(cfg2.freq, ctx.currentTime);
+
+    // Modulación de vibrato para efecto de suspenso
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.frequency.value = level === 'hard' ? 4 : level === 'medium' ? 2.5 : 1.2;
+    lfoGain.gain.value = level === 'hard' ? 3 : level === 'medium' ? 2 : 1;
+    lfo.connect(lfoGain);
+    lfoGain.connect(bgNode.frequency);
+    lfo.start();
+
+    bgNode.connect(bgGain);
+    bgNode.start();
+    bgGain.gain.linearRampToValueAtTime(cfg2.targetGain, ctx.currentTime + 2.0);
+  }
+
+  function stopBgMusic() {
+    if (bgGain) {
+      bgGain.gain.linearRampToValueAtTime(0, (ctx?.currentTime || 0) + 0.5);
+      setTimeout(() => { try { bgNode?.stop(); } catch(e){} }, 600);
+      bgNode = null; bgGain = null;
+    }
+  }
+
+  // ── CONTROL MAESTRO ───────────────────────────────────────
+  function toggleMute() {
+    muted = !muted;
+    if (masterGain) masterGain.gain.value = muted ? 0 : 0.85;
+    return muted;
+  }
+
+  function isInitialized() { return initialized; }
+
+  return {
+    init, resume, toggleMute, isInitialized,
+    levelIntroEasy, levelIntroMedium, levelIntroHard,
+    correct, wrong, comboSound, loseLife, lastLife,
+    timerTick, timerUrgent, timeout, gameOver, victory,
+    newItem, selectLevel, startBgMusic, stopBgMusic,
+  };
+})();
+
+// ======================================================
+// CONTROL DE SONIDO (botón flotante)
+// ======================================================
+let soundMuted = false;
+
+function toggleSound() {
+  SFX.init();
+  soundMuted = SFX.toggleMute();
+  const btn = document.getElementById('sound-toggle');
+  btn.textContent = soundMuted ? '🔇' : '🔊';
+  btn.classList.toggle('muted', soundMuted);
+}
+
+// Activar audio en primer toque del usuario
+function initAudioOnInteraction() {
+  if (SFX.isInitialized()) return;
+  SFX.init();
+  const notice = document.getElementById('audio-notice');
+  notice.classList.remove('show');
+}
+
+document.addEventListener('click', initAudioOnInteraction, { once: true });
+document.addEventListener('touchstart', initAudioOnInteraction, { once: true });
+
+// Mostrar aviso de audio al cargar
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const notice = document.getElementById('audio-notice');
+    notice.classList.add('show');
+    setTimeout(() => notice.classList.remove('show'), 4000);
+  }, 800);
+});
+</script>
+
+</body>
+</html>
